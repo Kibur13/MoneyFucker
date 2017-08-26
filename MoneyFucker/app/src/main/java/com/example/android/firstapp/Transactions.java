@@ -15,11 +15,34 @@ public class Transactions {
         super();
     }
 
-    public Transactions (double amount, String name)
+    public Transactions (String name, double amount )
     {
         super();
         this.amount = amount;
         this.name = name;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
