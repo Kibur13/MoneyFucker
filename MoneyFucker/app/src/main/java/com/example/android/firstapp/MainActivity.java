@@ -15,7 +15,7 @@ import static com.example.android.firstapp.R.id.fab;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listView1;
+
 
 
     @Override
@@ -26,30 +26,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        Transactions Transact_items[]=new Transactions[]
-
-                {
 
 
-
-                }
-
-                TransactionAdapter adapter = new TransactionAdapter(this,
-                        R.layout.listview_item_row,Transact_items);
-
-            listView1 = (ListView)findViewById(R.id.listView1);
-
-        View header =
-                (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        listView1.addHeaderView(header);
-        listView1.setAdapter(adapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Sam is an idiot, or a bitch", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent purpose = new Intent(MainActivity.this,TransactionsList.class);
+                startActivity(purpose);
+                //Snackbar.make(view, "Sam is an idiot, or a bitch", Snackbar.LENGTH_LONG)
+                  //      .setAction("Action", null).show();
             }
         });
     }

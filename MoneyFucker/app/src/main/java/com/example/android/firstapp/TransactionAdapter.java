@@ -31,7 +31,7 @@ public class TransactionAdapter extends ArrayAdapter<Transactions>{
         this.data=data;
     }
 
-
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -44,7 +44,9 @@ public class TransactionAdapter extends ArrayAdapter<Transactions>{
 
             holder = new TransactionHolder();
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
+           // holder.imgIcon.setImageResource(apple_pie);
             holder.txtTitle= (TextView)row.findViewById(R.id.txtTitle);
+            holder.txtLine= (TextView)row.findViewById(R.id.amount);
 
             row.setTag(holder);
 
@@ -59,6 +61,9 @@ public class TransactionAdapter extends ArrayAdapter<Transactions>{
         Transactions transact = data[position];
         holder.txtTitle.setText(transact.name);
         holder.imgIcon.setImageResource(apple_pie);
+        double amounts = transact.getAmount();
+        holder.txtLine.setText(""+amounts);
+
         return row;
         //return super.getView(position, convertView, parent);
     }
