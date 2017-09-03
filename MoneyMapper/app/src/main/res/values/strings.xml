@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Money Mapper</string>
+    <string name="action_settings">Settings</string>
+    <string name="transaction_name_prompt">Transaction Name:</string>
+    <string name="title_activity_trans_collection">Add Transactions</string>
+    <string name="title_transactions">Transactions</string>
+</resources>
