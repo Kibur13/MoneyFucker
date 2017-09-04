@@ -9,9 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+import android.widget.ListView;
+
+import static com.example.android.firstapp.R.id.fab;
+>>>>>>> Jul
 
 public class MainActivity extends AppCompatActivity {
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +29,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 Snackbar.make(view, "No Julian Is The Idiot, Idiot", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+=======
+                Intent purpose = new Intent(MainActivity.this,TransactionsList.class);
+                startActivity(purpose);
+                //Snackbar.make(view, "Sam is an idiot, or a bitch", Snackbar.LENGTH_LONG)
+                  //      .setAction("Action", null).show();
+>>>>>>> Jul
             }
         });
     }
