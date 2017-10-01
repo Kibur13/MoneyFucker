@@ -23,6 +23,7 @@ public class TransactionDB extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "transactionData.db";
 
     public static final String TABLE_PRODUCTS = "transactions";
+
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PRODUCTNAME = "transactionName";
 

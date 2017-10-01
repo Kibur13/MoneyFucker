@@ -1,18 +1,16 @@
 package com.example.mrclean.moneymapper.Accounts;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
 
+
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
-
-import java.util.List;
 
 public class AddAccountActivity extends AppCompatActivity {
 
@@ -30,14 +28,33 @@ public class AddAccountActivity extends AppCompatActivity {
         submitAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText etTransName = (EditText) findViewById(R.id.transName);
-                String accountName = etTransName.getText().toString();
+                EditText ETAccountName = (EditText) findViewById(R.id.EditAccountName);
+                String accountName = ETAccountName.getText().toString();
+
+                EditText ETAccountAmount = (EditText) findViewById(R.id.EditAccountAmount);
+                double accountAmount = Integer.parseInt(ETAccountAmount.getText().toString());
+
+                EditText ETAccountDate = (EditText) findViewById(R.id.editAccountDate);
+                String accountDate = ETAccountDate.getText().toString();
+
+                EditText ETAccountType = (EditText) findViewById(R.id.EditAccountType);
+                String accountType = ETAccountType.getText().toString();
 
 
                 //Account account = new Account();
 
-                Account newAccount = new Account("netflix","10/29/05", "monthly", 10.00);
-                        AccountDataProvider.accountList.add(newAccount) ;
+                Account newAccount = new Account(accountName, accountDate, accountType, accountAmount);
+
+                AccountRealmDataMethods AddToRealm;
+
+                AddToRealm.createAccount();
+
+
+               // AccountDB AccountingDB = new AccountDB(this,null, null,1);
+
+//                AccountingDB.addAccountDB(new Account("netflix","10/29/05", "monthly", 10.00));
+//                        AccountDataProvider.accountList.add(newAccount) ;
+
 
                // Snackbar.make(view, "Your new transaction is : " + accountName, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 

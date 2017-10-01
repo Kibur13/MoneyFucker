@@ -8,76 +8,119 @@
     tools:context="com.example.mrclean.moneymapper.Accounts.AddAccountActivity"
     tools:showIn="@layout/activity_trans_collection">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:layout_editor_absoluteY="-112dp"
-        tools:layout_editor_absoluteX="0dp">
+    <EditText
+        android:id="@+id/EditAccountName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Account Name"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="27dp" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/EditAccountAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Amount"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="106dp" />
 
-            <TextView
-                android:id="@+id/addAccountAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/editAccountDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Date"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="177dp" />
 
-                android:text="Account"
-                android:textStyle="bold" />
+    <EditText
+        android:id="@+id/EditAccountType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Type"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="266dp" />
 
-            <TextView
-                android:id="@+id/addAccountAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Amount" />
+    <Button
+        android:id="@+id/submitTrans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/transName"
+        android:layout_below="@+id/addAccountDate"
+        android:onClick="submitClickHandler"
+        android:text="Add"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="380dp" />
 
-            <TextView
-                android:id="@+id/addAccountDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Date" />
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="293dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="16dp">
 
-            <TextView
-                android:id="@+id/addAccountType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="TextView" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1.68"
+            android:text="Account
+    Name"
+            android:textSize="17dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="42dp" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/addAccountAmount"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_below="@+id/submitTrans"
+            android:layout_toEndOf="@+id/addAccountDate"
+            android:layout_weight="0.62"
+            android:text="Amount"
+            android:textSize="25dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="111dp" />
 
+        <TextView
+            android:id="@+id/addAccountDate"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignStart="@+id/addAccountType"
+            android:layout_below="@+id/transName"
+            android:layout_weight="2.21"
+            android:text="Date"
+            android:textSize="25dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="173dp" />
 
-        <EditText
-            android:id="@+id/transName"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/addAccountType"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="55dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:layout_toStartOf="@+id/transName"
+            android:layout_weight="0.76"
+            android:text="Type"
+            android:textSize="25dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="209dp" />
 
-        <Button
-            android:id="@+id/submitTrans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="57dp"
-            android:onClick="submitClickHandler"
-            android:text="Add"
-            tools:layout_editor_absoluteX="129dp"
-            tools:layout_editor_absoluteY="380dp"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_centerHorizontal="true" />
+    </LinearLayout>
 
-    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
