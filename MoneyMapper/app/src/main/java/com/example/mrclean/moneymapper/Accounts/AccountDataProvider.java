@@ -1,15 +1,20 @@
 package com.example.mrclean.moneymapper.Accounts;
 
+import android.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.Date;
 import java.util.List;
-import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
-import java.util.Map;
+
 
 /**
  * Created by mrclean on 8/29/17.
  */
 
 public final class AccountDataProvider {
+
 
 
     //allows the information being brought in to be constructed into an Array
@@ -22,6 +27,8 @@ public final class AccountDataProvider {
 
     //raw data that is being fed into the array List
     public static List<Account> accountList = new ArrayList<>();
+
+
 
     static {
 
