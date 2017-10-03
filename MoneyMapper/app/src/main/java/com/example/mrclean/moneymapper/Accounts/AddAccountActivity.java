@@ -3,6 +3,7 @@ package com.example.mrclean.moneymapper.Accounts;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,9 +13,14 @@ import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
 
+import io.realm.Realm;
+
+
 public class AddAccountActivity extends AppCompatActivity {
 
     //private List<Account> accounts = AccountDataProvider.accountList;
+    private AccountRealmDataMethods Adding;
+    private static final String TAG = AddAccountActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +28,19 @@ public class AddAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trans_collection);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Realm.init(this);
+
+
+        Adding = new AccountRealmDataMethods();
+        AccountRealmDataMethods AddToRealm;
 
         //submit button to collect the account information
         Button submitAccount = (Button) findViewById(R.id.submitTrans);
         submitAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 EditText ETAccountName = (EditText) findViewById(R.id.EditAccountName);
                 String accountName = ETAccountName.getText().toString();
 
@@ -45,9 +58,13 @@ public class AddAccountActivity extends AppCompatActivity {
 
                 Account newAccount = new Account(accountName, accountDate, accountType, accountAmount);
 
-                AccountRealmDataMethods AddToRealm;
 
-                AddToRealm.createAccount();
+
+
+                Adding.createAccount(newAccount);
+
+                Log.i(TAG, "Account: " + newAccount);
+
 
 
                // AccountDB AccountingDB = new AccountDB(this,null, null,1);
