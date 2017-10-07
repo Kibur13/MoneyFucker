@@ -9,9 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< HEAD
 import android.widget.ListView;
 
 import static com.example.android.firstapp.R.id.fab;
+=======
+<<<<<<< HEAD
+import android.widget.Toast;
+=======
+import android.widget.ListView;
+
+import static com.example.android.firstapp.R.id.fab;
+>>>>>>> Jul
+>>>>>>> JulTest
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +42,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                Snackbar.make(view, "No Julian Is The Idiot, Idiot", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+=======
+>>>>>>> JulTest
                 Intent purpose = new Intent(MainActivity.this,TransactionsList.class);
                 startActivity(purpose);
                 //Snackbar.make(view, "Sam is an idiot, or a bitch", Snackbar.LENGTH_LONG)
                   //      .setAction("Action", null).show();
+<<<<<<< HEAD
+=======
+>>>>>>> Jul
+>>>>>>> JulTest
             }
         });
     }
