@@ -4,23 +4,38 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.mrclean.moneymapper.Accounts.Account;
 import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
-import com.example.mrclean.moneymapper.Accounts.AccountListAdapter;
 import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
+import com.example.mrclean.moneymapper.Features.AccountAdapter;
 
 import java.util.List;
+
+import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Account> accounts = AccountDataProvider.accountList;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    //public static final int SCHEMA_VERSION = 1;
+
+    private RecyclerView accountRecyclerView;
+    public AccountRealmDataMethods dataSource;
+    private AccountAdapter accountAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Realm setup
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("account.realm")
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.deleteRealm(config);
+        Realm.setDefaultConfiguration(config);
+
+        //instantiates realm methods and opens the database
+        dataSource = new AccountRealmDataMethods();
+        dataSource.open();
+
+        //sets up the RecyclerView for Realm db
+        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
+        setupRecyclerView();
+
 
         //FAB goes to adding a new Account
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -39,41 +73,58 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addAccount);
             }
         });
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        AccountListAdapter adapter = new AccountListAdapter(
-                this, R.layout.list_account,accounts);
-        ListView lv = (ListView) findViewById(R.id.listView);
-        lv.setAdapter(adapter);
-
-
-
-
 
     }
 
-    //creates options menu
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    protected void onResume() {
+        super.onResume();
+        dataSource.open();
 
-    //populates menu with items
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        for (Account account : AccountDataProvider.HCAccountList)
+        {
+            dataSource.createAccount(account);
         }
 
-        return super.onOptionsItemSelected(item);
+        List<Account> allAccounts = dataSource.getAllAccounts();
+
+        for(Account account : allAccounts)
+        {
+            Log.i(TAG, "account : " + account);
+        }
+
     }
+
+    @Override
+    protected void onDestroy() {
+        dataSource.close();
+        super.onDestroy();
+    }
+
+    private void setupRecyclerView()
+    {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        accountRecyclerView.setLayoutManager(layoutManager);
+
+        accountRecyclerView.setHasFixedSize(true);
+
+        accountAdapter = new AccountAdapter((OrderedRealmCollection<Account>)
+                dataSource.getAllAccounts(),true);
+        accountRecyclerView.setAdapter(accountAdapter);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dataSource.close();
+    }
+
+
+
+
+
+
 }
+

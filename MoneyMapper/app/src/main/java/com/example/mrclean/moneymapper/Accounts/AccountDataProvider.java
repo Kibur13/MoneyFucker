@@ -1,6 +1,8 @@
 package com.example.mrclean.moneymapper.Accounts;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
 import java.util.Map;
@@ -12,25 +14,23 @@ import java.util.Map;
 public final class AccountDataProvider {
 
 
-    //allows the information being brought in to be constructed into an Array
-    private static void addAccount(String name, String date,
-                                   String type, double amount) {
-        Account account = new Account(name, date, type, amount);
-        accountList.add(account);
+    public static List<Account> HCAccountList;
 
-    }
 
-    //raw data that is being fed into the array List
-    public static List<Account> accountList = new ArrayList<>();
-
+    //hard-coding for realm start-up
     static {
 
-        addAccount("Food", "8/27/17", "weekly", 70);
-        addAccount("Gas", "9/1/17", "Weekly", 40);
-        addAccount("Rent", "9/1/17", "Monthly", 415);
-        addAccount("Power", "9/5/17", "Monthly", 65.35);
-        addAccount("Water", "10/12/17", "Bi-Monthly", 100);
+        HCAccountList = new ArrayList<>();
 
+        //creates Calendar and makes it a Date set to the current date
+        final Calendar cal = Calendar.getInstance();
+        Date accountDate = cal.getTime();
+
+        //objects getting added to realm
+        HCAccountList.add( new Account("Food", accountDate, "weekly", 70));
+        HCAccountList.add(new Account("Rent", accountDate, "Monthly", 415));
+        HCAccountList.add(new Account("Power", accountDate, "Monthly", 65.35));
+        HCAccountList.add(new Account("Water", accountDate, "Bi-Monthly", 100));
     }
 
 
