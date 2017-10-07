@@ -20,6 +20,7 @@ public class AccountRealmDataMethods {
 
     private Realm AccRealm;
 
+    //opens realm instance
     public void open()
     {
         AccRealm = Realm.getDefaultInstance();
@@ -27,6 +28,8 @@ public class AccountRealmDataMethods {
         Log.d(TAG, "opened:");
 
     }
+
+    //closes realm instance
     public void close()
     {
         AccRealm.close();
@@ -34,6 +37,7 @@ public class AccountRealmDataMethods {
         Log.d(TAG, "Closed");
     }
 
+    //creates or adds new account
     public void createAccount (final Account account)
     {
         AccRealm.executeTransaction(new Realm.Transaction()
@@ -45,35 +49,39 @@ public class AccountRealmDataMethods {
                                         }
                                     });
 
-                                  Log.d(TAG, "createdRecipe: the id: " + account.getId());
+                                  Log.d(TAG, "insertOrUpdate: " + account.getId());
 
 
 
     }
+
+    //lists all accounts
     public List<Account> getAllAccounts()
     {
         return AccRealm.where(Account.class).findAll();
     }
 
-    public void modifyStuff()
-    {
-        final Account account = AccRealm.where(Account.class).findFirst();
 
-        AccRealm.executeTransaction(new Realm.Transaction()
-
-                                    {
-                                        @Override
-                                        public void execute(Realm realm) {
-                                            account.setName("Renters");
-                                        }
-                                    }
-
-
-
-
-        );
-    }
-
+    //changes specific items in Realm
+//    public void modifyStuff()
+//    {
+//        final Account account = AccRealm.where(Account.class).findFirst();
+//
+//        AccRealm.executeTransaction(new Realm.Transaction()
+//
+//                                    {
+//                                        @Override
+//                                        public void execute(Realm realm) {
+//                                            account.setName("Renters");
+//                                        }
+//                                    }
+//
+//
+//
+//
+//        );
+//    }
+//    //deletes particular Realm object
 //    public void deleteAccount(Account account)
 //    {
 //        final Account accountManaged = AccRealm.where(Account.class).equalTo(AccountFields.ID,account.getId()).findFirst();
@@ -93,6 +101,7 @@ public class AccountRealmDataMethods {
 //    }
 
 
+    //Deletes everything in Realm
     public void deleteEverything()
     {
         final RealmResults<Account> accounts = AccRealm.where(Account.class).findAll();

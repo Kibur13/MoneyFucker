@@ -65,7 +65,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         Account account = getItem( position);
         holder.accountName.setText(account.getName());
-        holder.accountDate.setText(account.getDate());
+        holder.accountDate.setText(account.getDateString());
         holder.accountType.setText(account.getType());
         holder.accountAmount.setText(String.valueOf(account.getAmount()));
 

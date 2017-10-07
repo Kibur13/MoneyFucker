@@ -1,5 +1,7 @@
 package com.example.mrclean.moneymapper.Accounts;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import android.os.Parcel;
@@ -19,7 +21,7 @@ public class Account extends RealmObject {
     private String id = UUID.randomUUID().toString();
 
     private String name;
-    private String date;
+    private Date date;
     private String type;
     private double amount;
     //private int id;
@@ -31,6 +33,7 @@ public class Account extends RealmObject {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -39,13 +42,15 @@ public class Account extends RealmObject {
         this.name = name;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
+
+    public String getDateString(){return DateFormat.getDateInstance().format(date);}
 
     public String getType() {
         return type;
@@ -66,7 +71,7 @@ public class Account extends RealmObject {
 
 
     //constructor for Account class
-    public Account(String name, String date, String type, double amount) {
+    public Account(String name, Date date, String type, double amount) {
         this.name = name;
         this.date = date;
         this.type = type;
@@ -95,7 +100,8 @@ public class Account extends RealmObject {
 
     @Override
     public String toString() {
-        return "Account {" + "Name'"+name+", amount due '"+amount+" , date '"+date+" , type '"+type+"}";
+        return "Account {" + "Name: "+name+", Amount: "+amount+" , Date: "
+                + DateFormat.getDateInstance().format(date)+" , Type: "+type+"}";
 
         //return super.toString();
     }

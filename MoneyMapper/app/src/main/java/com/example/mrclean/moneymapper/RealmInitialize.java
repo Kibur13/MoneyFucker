@@ -15,7 +15,7 @@ import io.realm.RealmConfiguration;
 public class RealmInitialize extends Application {
 
 
-    public static final int SCHEMA_VERSION = 2;
+    public static final int SCHEMA_VERSION = 3;
 
     @Override
     public void onCreate() {

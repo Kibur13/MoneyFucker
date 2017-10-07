@@ -23,24 +23,18 @@ import java.util.List;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
-
+import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private List<Account> accounts = AccountDataProvider.accountList;
-    List<Account> ListAccounts; //= new ArrayList<>();
-    private ListView lv;
-
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    //public static final int SCHEMA_VERSION = 1;
 
     private RecyclerView accountRecyclerView;
     public AccountRealmDataMethods dataSource;
     private AccountAdapter accountAdapter;
-
-
-
 
 
     @Override
@@ -49,21 +43,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Realm setup
         Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("account.realm")
+                .deleteRealmIfMigrationNeeded()
+                .build();
 
-        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
+        Realm.deleteRealm(config);
+        Realm.setDefaultConfiguration(config);
 
+        //instantiates realm methods and opens the database
         dataSource = new AccountRealmDataMethods();
-
         dataSource.open();
 
-
-
+        //sets up the RecyclerView for Realm db
+        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
         setupRecyclerView();
 
+
         //FAB goes to adding a new Account
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,49 +74,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-//        AccountListAdapter adapter = new AccountListAdapter(
-//                this, R.layout.list_account,accounts);
-//        ListView lv = (ListView) findViewById(R.id.listView);
-//        AccountingDB = new AccountDB(this,null, null,1);
-//        lv.setAdapter(new ViewAdapter(AccountingDB.listfromdb()));
-
-
-       /*
-      lv.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-              int id_To_Search = arg2+1;
-              Bundle databundle = new Bundle();
-              databundle.putInt("id",id_To_Search);
-              Intent intent = new Intent(getApplicationContext(),AddAccountActivity);
-              intent.putExtras(databundle);
-              startActivity(intent);
-
-
-          }
-      });
-
-      */
-
-       // lv.setAdapter(adapter);
-
-
-
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        dataSource.open();
 
         for (Account account : AccountDataProvider.HCAccountList)
-
         {
             dataSource.createAccount(account);
         }
@@ -126,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         for(Account account : allAccounts)
         {
             Log.i(TAG, "account : " + account);
-
         }
 
     }
@@ -150,57 +114,12 @@ public class MainActivity extends AppCompatActivity {
         accountRecyclerView.setAdapter(accountAdapter);
     }
 
-    //creates options menu
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
-    /*
-    //populates menu with items
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        super.onOptionsItemSelected(item);
-        switch (item.getItemId())
-        {
-            case R.id.item1:
-                Bundle databundle = new Bundle();
-                databundle.putInt("id",0);
-                Intent intent = new Intent(getApplicationContext(),AddAccountActivity);
-                intent.putExtras(databundle);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        /*
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-
+    protected void onPause() {
+        super.onPause();
+        dataSource.close();
     }
-    */
-
-
-//    public boolean onKeyDown(int keycode, KeyEvent Event)
-//    {
-//        if(keycode == KeyEvent.KEYCODE_BACK)
-//        {
-//            moveTaskToBack(true);
-//        }
-//        return super.onKeyDown(keycode, Event);
-//    }
 
 
 
