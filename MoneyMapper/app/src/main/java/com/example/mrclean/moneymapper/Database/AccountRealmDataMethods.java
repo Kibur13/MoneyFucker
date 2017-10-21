@@ -55,6 +55,12 @@ public class AccountRealmDataMethods {
         return AccRealm.where(Account.class).findAll();
     }
 
+    public Account getAccount (String ACCid)
+    {
+        return AccRealm.where(Account.class).distinct(ACCid).first();
+
+    }
+
     public void modifyStuff()
     {
         final Account account = AccRealm.where(Account.class).findFirst();

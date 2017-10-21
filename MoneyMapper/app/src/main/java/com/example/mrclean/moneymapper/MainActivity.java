@@ -75,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        FloatingActionButton DeleteFAB = (FloatingActionButton) findViewById(R.id.DeleteFAB);
+        DeleteFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dataSource.deleteEverything();
+                //Intent addAccount = new Intent(MainActivity.this, AddAccountActivity.class);
+                //startActivity(addAccount);
+            }
+        });
+
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

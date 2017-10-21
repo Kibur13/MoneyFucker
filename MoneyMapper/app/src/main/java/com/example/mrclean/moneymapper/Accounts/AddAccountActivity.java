@@ -40,12 +40,12 @@ public class AddAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                Adding.open();
                 EditText ETAccountName = (EditText) findViewById(R.id.EditAccountName);
                 String accountName = ETAccountName.getText().toString();
 
                 EditText ETAccountAmount = (EditText) findViewById(R.id.EditAccountAmount);
-                double accountAmount = Integer.parseInt(ETAccountAmount.getText().toString());
+                double accountAmount = Double.parseDouble(ETAccountAmount.getText().toString());
 
                 EditText ETAccountDate = (EditText) findViewById(R.id.editAccountDate);
                 String accountDate = ETAccountDate.getText().toString();
@@ -64,6 +64,7 @@ public class AddAccountActivity extends AppCompatActivity {
                 Adding.createAccount(newAccount);
 
                 Log.i(TAG, "Account: " + newAccount);
+                Adding.close();
 
 
 

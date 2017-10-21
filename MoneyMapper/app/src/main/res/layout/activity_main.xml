@@ -38,4 +38,15 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/DeleteFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:layout_anchor="@id/account_RView"
+        app:layout_anchorGravity="center_vertical|right"
+        app:srcCompat="@android:drawable/ic_delete" />
+
 </android.support.design.widget.CoordinatorLayout>
