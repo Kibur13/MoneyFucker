@@ -10,4 +10,9 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.mrclean.moneymapper.Features.AccountFragment"
-    tools:listitem="@layout/fragment_account" />
+    tools:listitem="@layout/list_account" />
+
+
+<!--<android.support.v7.widget.RecyclerView android:layout_height="wrap_content"-->
+<!--android:layout_width="match_parent" android:id="@id/account_RView"-->
+<!--tools:listitem="@layout/list_account" android:layout_marginTop="?attr/actionBarSize"/>-->
