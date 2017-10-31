@@ -2,13 +2,9 @@ package com.example.mrclean.moneymapper.Accounts;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.UUID;
-
-import android.os.Parcel;
 
 
 import io.realm.RealmObject;
-import io.realm.RealmList;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -18,21 +14,52 @@ import io.realm.annotations.PrimaryKey;
 public class Account extends RealmObject {
 
     @PrimaryKey
-    private String id = UUID.randomUUID().toString();
 
     private String name;
-    private Date date;
     private String type;
+    private Date billedOnDate;
+    private Date dateDue;
     private double amount;
-    //private int id;
+    private String priority;
+    private String regularity;
+    private boolean autoWithDrawl;
+    private boolean amountChanges;
+    private boolean paymentStatus;
 
-    public String getId() {
-        return id;
+
+
+    public String getType() {
+        return type;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public Date getBilledOnDate() {
+        return billedOnDate;
+    }
+
+    public void setBilledOnDate(Date billedOnDate) {
+        this.billedOnDate = billedOnDate;
+    }
+
+    public boolean isAmountChanges() {
+        return amountChanges;
+    }
+
+    public void setAmountChanges(boolean amountChanges) {
+        this.amountChanges = amountChanges;
+    }
+
+    public boolean isPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
 
     public String getName() {
         return name;
@@ -42,23 +69,17 @@ public class Account extends RealmObject {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
+
+    public Date getDateDue() {
+        return dateDue;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateDue(Date dateDue) {
+        this.dateDue = dateDue;
     }
 
-    public String getDateString(){return DateFormat.getDateInstance().format(date);}
+    public String getDateString(){return DateFormat.getDateInstance().format(dateDue);}
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public double getAmount() {
         return amount;
@@ -69,29 +90,67 @@ public class Account extends RealmObject {
     }
 
 
-
-    //constructor for Account class
-    public Account(String name, Date date, String type, double amount) {
-        this.name = name;
-        this.date = date;
-        this.type = type;
-        this.amount = amount;
+    public String getPriority() {
+        return priority;
     }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+
+    public String getRegularity() {
+        return regularity;
+    }
+
+    public void setRegularity(String regularity) {
+        this.regularity = regularity;
+    }
+
+
+    public boolean isAutoWithdrawl() {
+        return autoWithDrawl;
+    }
+
+    public void setAutoWithdrawl(boolean autoWithDrawl) {
+        this.autoWithDrawl = autoWithDrawl;
+    }
+
+
+
+    public Account() {
+
+    }
+
+
+    //constructor for all of Account class
+    public Account(String name, String type, Date billedOnDate, Date dateDue, double amount,
+                   String priority, String regularity, boolean autoWithDrawl,
+                   boolean amountChanges, boolean paymentStatus) {
+        this.name = name;
+        this.type = type;
+        this.billedOnDate = billedOnDate;
+        this.dateDue = dateDue;
+        this.amount = amount;
+        this.priority = priority;
+        this.regularity = regularity;
+        this.autoWithDrawl = autoWithDrawl;
+        this.amountChanges = amountChanges;
+        this.paymentStatus = paymentStatus;
+
+    }
+
 
 //    public Account(Parcel in) {
 //    }
 
-    public Account(String name, double amount)
-    {
-        this.name = name;
-        this.amount = amount;
-    }
 
-    //constructor 3 for account
-    public Account()
-    {
+//    public Account(String name, double amount)
+//    {
+//        this.name = name;
+//        this.amount = amount;
+//    }
 
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -101,7 +160,7 @@ public class Account extends RealmObject {
     @Override
     public String toString() {
         return "Account {" + "Name: "+name+", Amount: "+amount+" , Date: "
-                + DateFormat.getDateInstance().format(date)+" , Type: "+type+"}";
+                + DateFormat.getDateInstance().format(dateDue)+"}";
 
         //return super.toString();
     }
