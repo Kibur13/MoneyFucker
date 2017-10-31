@@ -8,16 +8,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
-import android.widget.ListView;
-
 import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Accounts.AccountCreation.BillOrExpense;
 import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
 import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Features.AccountAdapter;
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import java.util.List;
 
@@ -44,13 +43,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //chrome://inspect stetho setup for realm
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
+
         //Realm setup
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("account.realm")
                 .deleteRealmIfMigrationNeeded()
                 .build();
-
         Realm.deleteRealm(config);
         Realm.setDefaultConfiguration(config);
 
@@ -63,18 +68,21 @@ public class MainActivity extends AppCompatActivity {
         setupRecyclerView();
 
 
-        //FAB goes to adding a new Account
+        //FAB goes to starting dialogs to create new Account
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //creates the old add account
                 Intent addAccount = new Intent(MainActivity.this, AddAccountActivity.class);
                 startActivity(addAccount);
             }
         });
 
     }
+
+
 
     @Override
     protected void onResume() {
@@ -95,11 +103,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onDestroy() {
         dataSource.close();
         super.onDestroy();
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dataSource.close();
+    }
+
 
     private void setupRecyclerView()
     {
@@ -113,18 +130,6 @@ public class MainActivity extends AppCompatActivity {
                 dataSource.getAllAccounts(),true);
         accountRecyclerView.setAdapter(accountAdapter);
     }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        dataSource.close();
-    }
-
-
-
-
-
 
 }
 

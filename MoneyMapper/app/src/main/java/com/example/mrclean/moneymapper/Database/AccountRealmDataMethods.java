@@ -18,12 +18,13 @@ public class AccountRealmDataMethods {
 
     private static final String TAG = AccountRealmDataMethods.class.getSimpleName();
 
-    private Realm AccRealm;
+    private Realm AccountRealm;
 
     //opens realm instance
     public void open()
     {
-        AccRealm = Realm.getDefaultInstance();
+        //this is where it tells Realm which db to use
+        AccountRealm = Realm.getDefaultInstance();
 
         Log.d(TAG, "opened:");
 
@@ -32,7 +33,7 @@ public class AccountRealmDataMethods {
     //closes realm instance
     public void close()
     {
-        AccRealm.close();
+        AccountRealm.close();
 
         Log.d(TAG, "Closed");
     }
@@ -40,7 +41,7 @@ public class AccountRealmDataMethods {
     //creates or adds new account
     public void createAccount (final Account account)
     {
-        AccRealm.executeTransaction(new Realm.Transaction()
+        AccountRealm.executeTransaction(new Realm.Transaction()
                                     {
                                         @Override
                                         public void execute(Realm realm)
@@ -49,7 +50,7 @@ public class AccountRealmDataMethods {
                                         }
                                     });
 
-                                  Log.d(TAG, "insertOrUpdate: " + account.getId());
+                                  Log.d(TAG, "insertOrUpdate: " + account.getName());
 
 
 
@@ -58,16 +59,16 @@ public class AccountRealmDataMethods {
     //lists all accounts
     public List<Account> getAllAccounts()
     {
-        return AccRealm.where(Account.class).findAll();
+        return AccountRealm.where(Account.class).findAll();
     }
 
 
     //changes specific items in Realm
 //    public void modifyStuff()
 //    {
-//        final Account account = AccRealm.where(Account.class).findFirst();
+//        final Account account = AccountRealm.where(Account.class).findFirst();
 //
-//        AccRealm.executeTransaction(new Realm.Transaction()
+//        AccountRealm.executeTransaction(new Realm.Transaction()
 //
 //                                    {
 //                                        @Override
@@ -84,10 +85,10 @@ public class AccountRealmDataMethods {
 //    //deletes particular Realm object
 //    public void deleteAccount(Account account)
 //    {
-//        final Account accountManaged = AccRealm.where(Account.class).equalTo(AccountFields.ID,account.getId()).findFirst();
+//        final Account accountManaged = AccountRealm.where(Account.class).equalTo(AccountFields.ID,account.getId()).findFirst();
 //
 //
-//        AccRealm.executeTransaction(new Realm.Transaction()
+//        AccountRealm.executeTransaction(new Realm.Transaction()
 //                                    {
 //                                        @Override
 //                                        public void execute(Realm realm) {
@@ -104,9 +105,9 @@ public class AccountRealmDataMethods {
     //Deletes everything in Realm
     public void deleteEverything()
     {
-        final RealmResults<Account> accounts = AccRealm.where(Account.class).findAll();
+        final RealmResults<Account> accounts = AccountRealm.where(Account.class).findAll();
 
-        AccRealm.executeTransaction(new Realm.Transaction()
+        AccountRealm.executeTransaction(new Realm.Transaction()
                                     {
                                         @Override
                                         public void execute(Realm realm) {

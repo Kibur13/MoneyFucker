@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="regularity">
+        <item>Please Select</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Bi-Weekly</item>
+        <item>Monthly</item>
+        <item>Bi-Monthly</item>
+    </string-array>
+</resources>
