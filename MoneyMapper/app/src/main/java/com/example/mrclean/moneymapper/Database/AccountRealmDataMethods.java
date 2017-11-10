@@ -4,6 +4,7 @@ package com.example.mrclean.moneymapper.Database;
 import android.util.Log;
 
 import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Accounts.AccountFields;
 
 import java.util.List;
 
@@ -60,6 +61,11 @@ public class AccountRealmDataMethods {
         return AccRealm.where(Account.class).distinct(ACCid).first();
 
     }
+
+//    public Account getIDAcc (String Accid)
+//    {
+//        //return AccRealm.where(Account.class).contains(AccountFields.NAME,shitty).findFirst();
+//    }
 
     public void modifyStuff()
     {

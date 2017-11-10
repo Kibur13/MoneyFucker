@@ -4,4 +4,7 @@
     <string name="transaction_name_prompt">Transaction Name:</string>
     <string name="title_activity_trans_collection">Add Transactions</string>
     <string name="title_transactions">Transactions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
