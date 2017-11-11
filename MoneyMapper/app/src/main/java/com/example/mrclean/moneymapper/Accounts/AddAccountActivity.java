@@ -6,25 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.example.mrclean.moneymapper.Accounts.AccountCreation.BillOrExpense;
+import com.example.mrclean.moneymapper.Accounts.AccountCreation.FuturePayCalculator;
 import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewBill;
 import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewExpense;
+import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewIncome;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.DatePickerFragment;
 import com.example.mrclean.moneymapper.R;
-
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Objects;
-
 import io.realm.Realm;
-
 
 public class AddAccountActivity extends AppCompatActivity
         implements BillOrExpense.BillOrExpenseListener, NewExpense.NewExpenseListener,
         NewBill.NewBillListener, DatePickerFragment.DateSetListener, NewBill.NewBillDateListener,
-        NewExpense.DispenseDateListener{
+        NewExpense.DispenseDateListener, NewIncome.NewIncomeDateListener, NewIncome.NewIncomeListener{
 
     private AccountRealmDataMethods Adding;
     private static final String TAG = "AddAccountActivity";
@@ -95,6 +93,24 @@ public class AddAccountActivity extends AppCompatActivity
                         .add(R.id.add_account_container, expense)
                         .commit();
                 break;
+            case 3:
+                Log.i(TAG, "onBillOrExpenseChosen: Income Chosen");
+                NewIncome income = new NewIncome();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.add_account_container, income)
+                        .commit();
+                break;
+            case 4:
+                Log.i(TAG, "onBillOrExpenseChosen: FuturePay Chosen");
+                FuturePayCalculator futurePayCalculator = new FuturePayCalculator();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.add_account_container, futurePayCalculator)
+                        .commit();
+                break;
+
+
 
         }
     }
@@ -166,6 +182,17 @@ public class AddAccountActivity extends AppCompatActivity
                 tvTarget.setText(DateFormat.getDateInstance().format(date));
                 billDue = date;
                 break;
+            case "PAY_DATE":
+                Log.i(TAG, "AddAccount from DatePickerDialog, BILLED_DATE: " + tvPosition);
+                tvTarget = (TextView) findViewById(R.id.payDateHolder);
+                tvTarget.setText(DateFormat.getDateInstance().format(date));
+                billDue = date;
+                break;
+            case "DEPOSIT_DATE":
+                tvTarget = (TextView) findViewById(R.id.depositDateHolder);
+                tvTarget.setText(DateFormat.getDateInstance().format(date));
+                billedOnDate = date;
+                break;
         }
 
 
@@ -184,12 +211,27 @@ public class AddAccountActivity extends AppCompatActivity
         picker.show(getSupportFragmentManager(), "DATE_PICKER");
 
         Log.i(TAG, "AddAccountActivity onDateButtonPressed: tvLocation = " + tvLocation);
+    }
+
+    @Override
+    public void onIncomeFinish(String name, double amount, String regularity, String autoWithDraw,
+                               String changes, String status) {
+
+        boolean nAutoWithDraw, nChanges, nStatus;
+
+        String priority = "High";
+        String type = "Income";
+        nAutoWithDraw = Objects.equals(autoWithDraw, "Yes");
+        nChanges = Objects.equals(changes, "Yes");
+        nStatus = Objects.equals(status, "Yes");
 
 
-//        final DialogFragment picker = new DatePickerFragment();
-//        picker.show(getFragmentManager(),"DUE_DATE_PICKER");
+
+        Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
+                nAutoWithDraw, nChanges, nStatus);
+
+        Adding.createAccount(account);
 
 
     }
-
 }

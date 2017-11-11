@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:id="@+id/LL1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:text="Name:"
+            android:textAlignment="textEnd"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:text="Amount:"
+            android:textAlignment="textEnd"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvRegularity"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textSize="25sp"
+            android:text="Regularity:"
+            android:textAlignment="textEnd"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvWithDrawType"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:text="Direct Deposit"
+            android:textAlignment="textEnd"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:text="In Account"
+            android:textAlignment="textEnd"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvChanges"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:text="Changes:"
+            android:textAlignment="textEnd"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/payDate"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="Pay Date"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/depositDate"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="Deposit Date"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LL2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/LL1"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1">
+
+        <EditText
+            android:id="@+id/incomeName"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/incomeAmount"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/regularitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/withDrawTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/statusSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/changesSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/payDateHolder"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/depositDateHolder"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/finishedIncome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Done"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

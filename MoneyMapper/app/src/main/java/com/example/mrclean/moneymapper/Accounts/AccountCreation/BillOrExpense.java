@@ -1,6 +1,5 @@
 package com.example.mrclean.moneymapper.Accounts.AccountCreation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,11 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.mrclean.moneymapper.R;
-
-/**
- * This is the first of a series of Dialogs that will assist the user in setting up a new Account
- * Created by mrclean on 10/11/17.
- */
 
 public class BillOrExpense extends DialogFragment {
     private static final String TAG = "BillOrExpense";
@@ -34,8 +28,7 @@ public class BillOrExpense extends DialogFragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.billable_or_expense, container, false);
-
+        View rootView = inflater.inflate(R.layout.account_type_selection, container, false);
 
         //listens for Bill press
         Button btnBill = (Button) rootView.findViewById(R.id.newBill);
@@ -44,11 +37,10 @@ public class BillOrExpense extends DialogFragment {
             public void onClick(View v) {
                 accountType = 1;
                 mListener.onBillOrExpenseChosen(accountType);
-                Log.i(TAG, "onClick: new bill selected");
+                Log.i(TAG, "btnBill onClick: new bill selected");
                 dismiss();
             }
         });
-
 
 
         //listens for Expense press
@@ -58,15 +50,41 @@ public class BillOrExpense extends DialogFragment {
             public void onClick(View v) {
                 accountType = 2;
                 mListener.onBillOrExpenseChosen(accountType);
-                Log.i(TAG, "onClick: new expense selected");
+                Log.i(TAG, "btnExpense onClick: new expense selected");
                 dismiss();
             }
         });
 
 
+        //listens for Income press
+        Button btnIncome = (Button) rootView.findViewById(R.id.newIncome);
+        btnIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accountType = 3;
+                mListener.onBillOrExpenseChosen(accountType);
+                Log.i(TAG, "btnIncome onClick: new income selected");
+                dismiss();
+            }
+        });
+
+
+        //listens for Income press
+        Button btnFuturePay = (Button) rootView.findViewById(R.id.futurePay);
+        btnFuturePay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accountType = 4;
+                mListener.onBillOrExpenseChosen(accountType);
+                Log.i(TAG, "btnFuturePay onClick: Future Pay Calculator selected");
+                dismiss();
+            }
+        });
+
         return rootView;
     }
 
+    //sends data back to MainActivity
     public interface BillOrExpenseListener{
         void onBillOrExpenseChosen(int accountType);
     }

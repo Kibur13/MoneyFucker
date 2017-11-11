@@ -2,9 +2,9 @@ package com.example.mrclean.moneymapper.Accounts.AccountCreation;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.example.mrclean.moneymapper.DatePickerFragment;
+import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
-import java.text.DateFormat;
-import java.util.Date;
 
 
 /**
@@ -33,16 +31,16 @@ public class NewExpense extends Fragment implements AdapterView.OnItemSelectedLi
     private NewExpenseListener mListener;
     private DispenseDateListener dateListener;
 
-
     EditText textExpenseAmount;
     EditText textExpenseName;
-    //Holder for Date after user selects
     TextView tvDateHolder;
 
-    //needed for callback method / listener
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        //needed for callback method / listener
         //error handling for (this)fragment finish
         if (context instanceof NewBill.NewBillListener) {
             mListener = (NewExpense.NewExpenseListener) context;
@@ -73,7 +71,6 @@ public class NewExpense extends Fragment implements AdapterView.OnItemSelectedLi
 
         textExpenseName = (EditText) rootView.findViewById(R.id.expenseName);
         textExpenseAmount = (EditText) rootView.findViewById(R.id.expenseAmount);
-        //identifies textView for selected date to show to user
         tvDateHolder = (TextView) rootView.findViewById(R.id.dateHolder);
 
 
@@ -140,40 +137,14 @@ public class NewExpense extends Fragment implements AdapterView.OnItemSelectedLi
                 if (mListener == null){
                     throw new AssertionError();
                 }
-
                 mListener.onExpenseFinish( name, amount, priority, regularity);
+
+                Intent backToMain = new Intent(getContext(), MainActivity.class);
+                startActivity(backToMain);
             }
         });
 
-
-
         return rootView;
-    }
-
-
-    //captures user input from the spinner
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        parent.getItemAtPosition(position);
-    }
-    //required by Spinner / onItemSelected
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-//
-//    @Override
-//    public void onFragmentFinish(Date date, String tvPosition) {
-//        tvDateHolder.setText(DateFormat.getDateInstance().format(date));
-//        expenseDate = date;
-//        Log.i(TAG, "onFragmentFinish: New Expense collected Date");
-//    }
-
-
-    //callback method
-    public interface NewExpenseListener{
-        void onExpenseFinish(String name, Double amount,
-                             String priority, String regularity);
     }
 
     @Override
@@ -182,6 +153,26 @@ public class NewExpense extends Fragment implements AdapterView.OnItemSelectedLi
         mListener = null;
     }
 
+    //captures user input from the spinner
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        parent.getItemAtPosition(position);
+    }
+
+    //required by Spinner / onItemSelected
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    //callback method
+    public interface NewExpenseListener{
+        void onExpenseFinish(String name, Double amount,
+                             String priority, String regularity);
+    }
+
+
+    //sends account data to AddAccountActivity
     public interface DispenseDateListener{
         void onDateButtonPressed(String tvLocation);
     }

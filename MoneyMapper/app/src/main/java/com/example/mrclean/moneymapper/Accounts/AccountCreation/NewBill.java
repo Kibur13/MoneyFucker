@@ -1,9 +1,9 @@
 package com.example.mrclean.moneymapper.Accounts.AccountCreation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,19 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.example.mrclean.moneymapper.DatePickerFragment;
+import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
 
-import java.text.DateFormat;
-import java.util.Date;
 
-
+//AdapterView.OnItemSelectedListener is for the Spinners,
+// allows this Fragment to see what is selected
 public class NewBill extends Fragment implements AdapterView.OnItemSelectedListener {
-
-    public static final String MESSAGE_KEY = "message_key";
-
 
     private static final String TAG = "NewBill";
     private NewBillListener mListener;
@@ -34,9 +28,6 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
 
     EditText textBillAmount;
     EditText textBillName;
-    //Holder for Date after user selects
-    TextView tvDateHolder;
-
 
 
     public NewBill() {
@@ -76,9 +67,6 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
 
         textBillName = (EditText) rootView.findViewById(R.id.billName);
         textBillAmount = (EditText) rootView.findViewById(R.id.billAmount);
-        //identifies textView for selected date to show to user
-        tvDateHolder = (TextView) rootView.findViewById(R.id.dueDateHolder);
-
 
 
         //priority spinner setup
@@ -116,11 +104,6 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
         statusSpinner.setAdapter(statusAdapter);
 
 
-        //// TODO: 10/30/17 current date selection setup
-        //creates the datepickerdialog. allows it to know that this is the fragment that called it
-//        final DialogFragment picker = new DatePickerFragment();
-//        picker.setTargetFragment(this, 0);
-
 
         //starts date picker fragment
         Button dueDate = (Button) rootView.findViewById(R.id.dueDate);
@@ -128,8 +111,6 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick: dispenseDate button pressed");
-                //DialogFragment picker = new DatePickerFragment();
-
 
                 if (dateListener == null){
                     throw new AssertionError();
@@ -140,7 +121,7 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
                 }
 
                 //// TODO: 10/30/17 displays datepicker dialog fragment
-                //picker.show(getFragmentManager(),"DUE_DATE_PICKER");
+
             }
         });
 
@@ -151,12 +132,11 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
                 Log.i(TAG, "onClick: dispenseDate button pressed");
                 //DialogFragment picker = new DatePickerFragment();
 
-
                 if (dateListener == null){
                     throw new AssertionError();
                 }else {
-                    final String dueDate = "BILLED_DATE";
-                    dateListener.onDateButtonPressed(dueDate);
+                    final String billedDate = "BILLED_DATE";
+                    dateListener.onDateButtonPressed(billedDate);
                     Log.i(TAG, "NewBill dueDate: button pressed and Listener activated ");
                 }
             }
@@ -176,8 +156,8 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
                 String billChanges = changesSpinner.getSelectedItem().toString();
                 String billStatus = statusSpinner.getSelectedItem().toString();
 
-                //todo add second calendar and date
-                ExpenseFinished(billName, billAmount, billPriority, billRegularity,
+
+                BillFinished(billName, billAmount, billPriority, billRegularity,
                         billWithdrawType, billChanges,billStatus);
 
                 //logs output of current values at time of collections
@@ -185,31 +165,26 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
                         + "\nAmount: " + billAmount
                         + "\nPriority: " + billPriority
                         + "\nRegularity: " + billRegularity);
-
             }
 
-            private void ExpenseFinished(String name, Double amount,
-                                         String priority, String regularity,
-                                         String billWithdrawType, String changes, String status) {
-
-                //todo add second calendar and date
-
+            private void BillFinished(String name, Double amount,
+                                      String priority, String regularity,
+                                      String billWithdrawType, String changes, String status) {
 
                 if (mListener == null){
                     throw new AssertionError();
                 }
-
                 mListener.onBillFinish( name, amount, priority, regularity,
                         billWithdrawType, changes, status);
+
+                Intent backToMain = new Intent(getContext(), MainActivity.class);
+                startActivity(backToMain);
             }
+
         });
-
-
 
         return rootView;
     }
-
-
 
 
     @Override
@@ -218,7 +193,7 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
         mListener = null;
     }
 
-    //
+    //required by Spinner
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -230,18 +205,15 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
 
     }
 
-    //// todo add second calendar and get the date
-
-
-
+    //sends position of DatePicker button
     public interface NewBillDateListener{
         void onDateButtonPressed(String tvLocation);
     }
 
-
+    //sends account data to AddAccountActivity
     public interface NewBillListener {
         void onBillFinish(String name, double amount,
-                              String priority, String regularity, String autoWithDraw,
-                              String changes, String status);
+                          String priority, String regularity, String autoWithDraw,
+                          String changes, String status);
     }
 }

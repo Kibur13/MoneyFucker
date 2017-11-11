@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     //public static final int SCHEMA_VERSION = 1;
 
-    private RecyclerView accountRecyclerView;
+
     public AccountRealmDataMethods dataSource;
-    private AccountAdapter accountAdapter;
+
 
 
     @Override
@@ -57,93 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 .name("account.realm")
                 .deleteRealmIfMigrationNeeded()
                 .build();
-        Realm.deleteRealm(config);
         Realm.setDefaultConfiguration(config);
 
-        //instantiates realm methods and opens the database
-        dataSource = new AccountRealmDataMethods();
-        dataSource.open();
-
-        for (Account account : AccountDataProvider.HCAccountList)
-        {
-            dataSource.createAccount(account);
-        }
-        List<Account> allAccounts = dataSource.getAllAccounts();
-        dataSource.close();
-
-
-//        //sets up the RecyclerView for Realm db
-//        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
-//        setupRecyclerView();
         AccountListFragment AccListFrag = new AccountListFragment();
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_holder, AccListFrag)
                 .commit();
-
-        //FAB goes to starting dialogs to create new Account
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                //creates the old add account
-//                Intent addAccount = new Intent(MainActivity.this, AddAccountActivity.class);
-//                startActivity(addAccount);
-//            }
-//        });
-
     }
 
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        dataSource.open();
-
-       for (Account account : AccountDataProvider.HCAccountList)
-       {
-           dataSource.createAccount(account);
-        }
-
-        List<Account> allAccounts = dataSource.getAllAccounts();
-
-        for(Account account : allAccounts)
-        {
-            Log.i(TAG, "account : " + account);
-        }
-
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        dataSource.close();
-        super.onDestroy();
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        dataSource.close();
-    }
-
-
-//    private void setupRecyclerView()
-//    {
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        accountRecyclerView.setLayoutManager(layoutManager);
-//
-//        accountRecyclerView.setHasFixedSize(true);
-//
-//        accountAdapter = new AccountAdapter((OrderedRealmCollection<Account>)
-//                dataSource.getAllAccounts(),true);
-//        accountRecyclerView.setAdapter(accountAdapter);
-//    }
 
 }
 

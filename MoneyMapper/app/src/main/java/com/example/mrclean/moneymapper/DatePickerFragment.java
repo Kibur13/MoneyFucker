@@ -26,11 +26,6 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
 
     //for on date set interface
     private DateSetListener mListener;
-    //private Date setDateDue;
-
-
-
-    //listener to send date back to the calling method
 
 
     @Override
@@ -41,7 +36,8 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-// Use the current date as the default date in the picker
+
+        // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -53,7 +49,7 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
         }
 
 
-// Create a new instance of DatePickerFragment and return it
+        // Create a new instance of DatePickerFragment and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
@@ -65,6 +61,7 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
             Log.i(TAG, "onDateSet: date collected");
         }
 
+
         private void DateSet(Date date){
             if (mListener == null){
                 throw new AssertionError();
@@ -72,6 +69,8 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
             mListener.onFragmentFinish(date, tvPosition);
     }
 
+
+        //sends data back to AddAccountActivity
         public interface DateSetListener {
             void onFragmentFinish (Date date, String tvPosition);
         }
