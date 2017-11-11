@@ -15,6 +15,7 @@ import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
 import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Features.AccountAdapter;
+import com.example.mrclean.moneymapper.Features.AccountListFragment;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
@@ -63,22 +64,35 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new AccountRealmDataMethods();
         dataSource.open();
 
-        //sets up the RecyclerView for Realm db
-        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
-        setupRecyclerView();
+        for (Account account : AccountDataProvider.HCAccountList)
+        {
+            dataSource.createAccount(account);
+        }
+        List<Account> allAccounts = dataSource.getAllAccounts();
+        dataSource.close();
 
+
+//        //sets up the RecyclerView for Realm db
+//        accountRecyclerView = (RecyclerView) findViewById(R.id.account_RView);
+//        setupRecyclerView();
+        AccountListFragment AccListFrag = new AccountListFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_holder, AccListFrag)
+                .commit();
 
         //FAB goes to starting dialogs to create new Account
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //creates the old add account
-                Intent addAccount = new Intent(MainActivity.this, AddAccountActivity.class);
-                startActivity(addAccount);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                //creates the old add account
+//                Intent addAccount = new Intent(MainActivity.this, AddAccountActivity.class);
+//                startActivity(addAccount);
+//            }
+//        });
 
     }
 
@@ -89,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         dataSource.open();
 
-        for (Account account : AccountDataProvider.HCAccountList)
-        {
-            dataSource.createAccount(account);
+       for (Account account : AccountDataProvider.HCAccountList)
+       {
+           dataSource.createAccount(account);
         }
 
         List<Account> allAccounts = dataSource.getAllAccounts();
@@ -118,18 +132,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupRecyclerView()
-    {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        accountRecyclerView.setLayoutManager(layoutManager);
-
-        accountRecyclerView.setHasFixedSize(true);
-
-        accountAdapter = new AccountAdapter((OrderedRealmCollection<Account>)
-                dataSource.getAllAccounts(),true);
-        accountRecyclerView.setAdapter(accountAdapter);
-    }
+//    private void setupRecyclerView()
+//    {
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        accountRecyclerView.setLayoutManager(layoutManager);
+//
+//        accountRecyclerView.setHasFixedSize(true);
+//
+//        accountAdapter = new AccountAdapter((OrderedRealmCollection<Account>)
+//                dataSource.getAllAccounts(),true);
+//        accountRecyclerView.setAdapter(accountAdapter);
+//    }
 
 }
 

@@ -1,38 +1,51 @@
 package com.example.mrclean.moneymapper.Features;
 
-import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+/**
+ * Created by jmd71_000 on 11/10/2017.
+ */
 
 
-import com.squareup.picasso.Picasso;
 
 
-import com.example.mrclean.moneymapper.R;
-import com.example.mrclean.moneymapper.Accounts.Account;
 
-import java.util.List;
+        import android.support.annotation.Nullable;
+        import android.support.v7.widget.RecyclerView;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.AdapterView;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import io.realm.OrderedRealmCollection;
-import io.realm.RealmRecyclerViewAdapter;
+        import com.example.mrclean.moneymapper.Accounts.Account;
+        import com.example.mrclean.moneymapper.R;
+
+        import io.realm.OrderedRealmCollection;
+        import io.realm.RealmRecyclerViewAdapter;
+
 
 
 
 
 /**
- * Created by j2md7_000 on 9/24/2017.
+ * Created by jmd71_000 on 11/5/2017.
  */
 
-public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdapter.ViewHolder>
-{
+public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdapter.ViewHolder> implements AdapterView.OnClickListener{
 
-    public AccountAdapter(@Nullable OrderedRealmCollection<Account> data,boolean autoUpdate)
+    private static final String TAG = AccountAdapter.class.getSimpleName();
+
+
+
+    public AccountAdapter(@Nullable OrderedRealmCollection<Account> data, boolean autoUpdate)
     {
         super(data,autoUpdate);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
@@ -41,37 +54,54 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
         TextView accountDate;
         TextView accountAmount;
         TextView accountType;
+        public View mView;
 
         public ViewHolder (View v)
         {
             super (v);
-                    accountName = (TextView) v.findViewById(R.id.addAccountName);
-                    accountDate = (TextView) v.findViewById(R.id.accountDate);
-                    accountAmount = (TextView) v.findViewById(R.id.accountAmount);
-                    accountType = (TextView) v.findViewById(R.id.accountType);
+            accountName = (TextView) v.findViewById(R.id.addAccountName);
+            accountDate = (TextView) v.findViewById(R.id.accountDate);
+            accountAmount = (TextView) v.findViewById(R.id.accountAmount);
+            accountType = (TextView) v.findViewById(R.id.accountType);
+            mView = itemView;
+            Log.d(TAG, accountName + " "+ accountDate);
+
         }
 
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_account,parent,false);
         return new ViewHolder(v);
-       // return null;
+        // return null;
+
+        // return null;
     }
 
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Account account = getItem( position);
-        holder.accountName.setText(account.getName());
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Account account = getItem( position);
+        if (account != null) {
+            holder.accountName.setText(account.getName());
+        }
         holder.accountDate.setText(account.getDateString());
-        holder.accountType.setText(account.getRegularity());
+        holder.accountType.setText(account.getType());
         holder.accountAmount.setText(String.valueOf(account.getAmount()));
 
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), account.getName(), Toast.LENGTH_LONG).show();
+            }
+
+
+        });
 
 
 
-        //super.onBindViewHolder(holder, position, payloads);
     }
 }
