@@ -1,41 +1,24 @@
 package com.example.mrclean.moneymapper;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import com.example.mrclean.moneymapper.Accounts.Account;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.BillOrExpense;
-import com.example.mrclean.moneymapper.Accounts.AccountDataProvider;
-import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
-import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
+
 import com.example.mrclean.moneymapper.Features.AccountAdapter;
 import com.example.mrclean.moneymapper.Features.AccountListFragment;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
-import java.util.List;
-
-import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements AccountAdapter.AccountAdapterLongListener, AccountAdapter.AccountAdapterShortListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     //public static final int SCHEMA_VERSION = 1;
-
-
-    public AccountRealmDataMethods dataSource;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,5 +50,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onLongClick(String name) {
+        Log.i(TAG, "onLongClick: Listener Received: " + name);
+    }
+
+    @Override
+    public void onShortClick(String name) {
+        Log.i(TAG, "onShortClick: Listener Received: " + name);
+    }
 }
 

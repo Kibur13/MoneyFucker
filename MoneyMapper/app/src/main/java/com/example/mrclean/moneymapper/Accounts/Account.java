@@ -1,9 +1,12 @@
 package com.example.mrclean.moneymapper.Accounts;
 
+import com.example.mrclean.moneymapper.Transactions.Transaction;
+
 import java.text.DateFormat;
 import java.util.Date;
 
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,8 +17,8 @@ import io.realm.annotations.PrimaryKey;
 public class Account extends RealmObject {
 
     @PrimaryKey
-
     private String name;
+
     private String type;
     private Date billedOnDate;
     private Date dateDue;
@@ -25,7 +28,15 @@ public class Account extends RealmObject {
     private boolean autoWithDrawl;
     private boolean amountChanges;
     private boolean paymentStatus;
+    private RealmList <Transaction> transaction;
 
+    public RealmList<Transaction> getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(RealmList<Transaction> transactions) {
+        this.transaction = transactions;
+    }
 
 
     public String getType() {
@@ -137,7 +148,6 @@ public class Account extends RealmObject {
         this.autoWithDrawl = autoWithDrawl;
         this.amountChanges = amountChanges;
         this.paymentStatus = paymentStatus;
-
     }
 
 
