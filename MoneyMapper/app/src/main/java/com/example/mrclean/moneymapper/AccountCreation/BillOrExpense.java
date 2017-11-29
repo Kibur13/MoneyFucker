@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Accounts.AccountCreation;
+package com.example.mrclean.moneymapper.AccountCreation;
 
 import android.content.Context;
 import android.os.Bundle;

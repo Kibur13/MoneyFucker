@@ -1,18 +1,17 @@
-package com.example.mrclean.moneymapper.Features;
+package com.example.mrclean.moneymapper.Accounts;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.mrclean.moneymapper.Accounts.Account;
-import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
+
+import com.example.mrclean.moneymapper.AccountCreation.AddAccountActivity;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.R;
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ import io.realm.OrderedRealmCollection;
 
 
 
-public class AccountListFragment extends Fragment {
+public class AccountListFragment extends android.app.Fragment {
 
-    private List<Account> CopiedAccountList = new ArrayList<>();
+    private List<Account> copiedAccountList = new ArrayList<>();
     private RecyclerView accountRecyclerView;
     private AccountAdapter accountAdapter;
     private AccountRealmDataMethods dataSource;
@@ -43,7 +42,7 @@ public class AccountListFragment extends Fragment {
         dataSource = new AccountRealmDataMethods();
 
         dataSource.open();
-        CopiedAccountList = dataSource.getAllAccounts();
+        copiedAccountList = dataSource.getAllAccounts();
     }
 
 
@@ -74,7 +73,6 @@ public class AccountListFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //creates the old add account
                 Intent addAccount = new Intent(getActivity(), AddAccountActivity.class);
                 startActivity(addAccount);
             }
@@ -82,7 +80,7 @@ public class AccountListFragment extends Fragment {
 
 
         //passing the data along to the custom adapter
-        accountAdapter = new AccountAdapter((OrderedRealmCollection)CopiedAccountList,true);
+        accountAdapter = new AccountAdapter((OrderedRealmCollection) copiedAccountList,true);
         accountRecyclerView.setAdapter(accountAdapter);
 
         return view;

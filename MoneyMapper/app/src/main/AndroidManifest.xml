@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Accounts.AddAccountActivity"
+            android:name=".AccountCreation.AddAccountActivity"
             android:label="@string/title_activity_trans_collection"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
