@@ -10,22 +10,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
-<<<<<<< HEAD
+
+import com.example.mrclean.moneymapper.Accounts.AccountCreation.AccountEditing;
 import com.example.mrclean.moneymapper.Accounts.AccountAdapter;
 import com.example.mrclean.moneymapper.Accounts.AccountListFragment;
-import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
-import com.example.mrclean.moneymapper.Transactions.AddTransaction;
-import com.example.mrclean.moneymapper.Transactions.Transaction;
-import com.example.mrclean.moneymapper.Transactions.TransactionListFragment;
-=======
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.AccountEditing;
-import com.example.mrclean.moneymapper.Features.AccountAdapter;
-import com.example.mrclean.moneymapper.Features.AccountListFragment;
 import com.example.mrclean.moneymapper.Features.DetailFragment;
 import com.example.mrclean.moneymapper.Features.Details.BillDetail;
 import com.example.mrclean.moneymapper.Features.Details.ExpenseDetail;
 import com.example.mrclean.moneymapper.Features.Details.IncomeDetail;
->>>>>>> JulTest
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
+import com.example.mrclean.moneymapper.Transactions.AddTransaction;
+import com.example.mrclean.moneymapper.Transactions.Transaction;
+import com.example.mrclean.moneymapper.Transactions.TransactionListFragment;
+
+
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
@@ -37,26 +35,18 @@ import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity
-<<<<<<< HEAD
-        implements AccountAdapter.AccountAdapterLongListener,
-        AccountAdapter.AccountAdapterShortListener, AddTransaction.TransactionDateListener,
-        AddTransaction.AddTransactionListener, DatePickerFragment.DateSetListener{
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    //needed to pass information between AddTransaction methods
-    Date dateTransaction;
-
-    private AccountRealmDataMethods dataSource;
-=======
         implements AccountAdapter.AccountAdapterLongListener, AccountAdapter.AccountAdapterShortListener, DetailFragment.OnFragmentInteractionListener,
-        BillDetail.OnDetailEdit ,ExpenseDetail.OnDetailEdit, IncomeDetail.OnFragmentInteractionListener{
+        BillDetail.OnDetailEdit ,ExpenseDetail.OnDetailEdit, IncomeDetail.OnFragmentInteractionListener, AddTransaction.TransactionDateListener,
+        AddTransaction.AddTransactionListener, DatePickerFragment.DateSetListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String ID_NAME = "id_name";
     private static final String ID_TYPE = "id_type";
->>>>>>> JulTest
+        Date dateTransaction;
+    private AccountRealmDataMethods dataSource;
+
 
 
     //public static final int SCHEMA_VERSION = 1;
@@ -171,9 +161,9 @@ public class MainActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putString(DatePickerFragment.MESSAGE_KEY, tvLocation);
 
-        final DialogFragment picker = new DatePickerFragment();
+        final DatePickerFragment picker = new DatePickerFragment();
         picker.setArguments(args);
-        picker.show(getSupportFragmentManager(), "DATE_PICKER");
+        picker.show(getFragmentManager(), "DATE_PICKER");
     }
 
     //Listener that receives the the Date from the DatePicker Fragment, includes who sent request

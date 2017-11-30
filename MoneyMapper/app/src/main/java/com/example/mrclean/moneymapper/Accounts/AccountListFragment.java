@@ -42,12 +42,9 @@ public class AccountListFragment extends android.app.Fragment {
         dataSource = new AccountRealmDataMethods();
 
         dataSource.open();
-<<<<<<< HEAD:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/Accounts/AccountListFragment.java
-        copiedAccountList = dataSource.getAllAccounts();
-=======
-        CopiedAccountList = dataSource.getAllAccounts();
 
->>>>>>> JulTest:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/Features/AccountListFragment.java
+        copiedAccountList = dataSource.getAllAccounts();
+
     }
 
 

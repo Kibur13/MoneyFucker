@@ -66,8 +66,7 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
     }
 
 
-<<<<<<< HEAD:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/AccountCreation/NewBill.java
-=======
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +94,7 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
 
     }
 
->>>>>>> JulTest:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/Accounts/AccountCreation/NewBill.java
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,

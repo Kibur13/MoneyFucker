@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mrclean.moneymapper.Accounts.Account;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewBill;
+//import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewBill;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Features.DetailFragment;
 import com.example.mrclean.moneymapper.R;
