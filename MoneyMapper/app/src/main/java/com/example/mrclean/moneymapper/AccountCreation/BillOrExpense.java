@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.example.mrclean.moneymapper.R;
 
-public class BillOrExpense extends DialogFragment {
+public class BillOrExpense extends android.app.DialogFragment {
     private static final String TAG = "BillOrExpense";
     private BillOrExpenseListener mListener;
     public int accountType = 0;

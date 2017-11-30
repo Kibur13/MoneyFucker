@@ -42,7 +42,7 @@ public class AddAccountActivity extends AppCompatActivity
         adding = new AccountRealmDataMethods();
 
         BillOrExpense billOrExpense = new BillOrExpense();
-        billOrExpense.show(getSupportFragmentManager(), "BILL_OR_EXPENSE");
+        billOrExpense.show(getFragmentManager(), "BILL_OR_EXPENSE");
 
     }
 
@@ -199,9 +199,9 @@ public class AddAccountActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putString(DatePickerFragment.MESSAGE_KEY, tvLocation);
 
-        final DialogFragment picker = new DatePickerFragment();
+        final DatePickerFragment picker = new DatePickerFragment();
         picker.setArguments(args);
-        picker.show(getSupportFragmentManager(), "DATE_PICKER");
+        picker.show(getFragmentManager(), "DATE_PICKER");
 
         Log.i(TAG, "AddAccountActivity onDateButtonPressed: tvLocation = " + tvLocation);
     }

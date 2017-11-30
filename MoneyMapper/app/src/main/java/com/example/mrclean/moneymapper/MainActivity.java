@@ -1,5 +1,8 @@
 package com.example.mrclean.moneymapper;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +10,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.example.mrclean.moneymapper.Accounts.AccountAdapter;
 import com.example.mrclean.moneymapper.Accounts.AccountListFragment;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Transactions.AddTransaction;
 import com.example.mrclean.moneymapper.Transactions.Transaction;
 import com.example.mrclean.moneymapper.Transactions.TransactionListFragment;
+=======
+import com.example.mrclean.moneymapper.Accounts.AccountCreation.AccountEditing;
+import com.example.mrclean.moneymapper.Features.AccountAdapter;
+import com.example.mrclean.moneymapper.Features.AccountListFragment;
+import com.example.mrclean.moneymapper.Features.DetailFragment;
+import com.example.mrclean.moneymapper.Features.Details.BillDetail;
+import com.example.mrclean.moneymapper.Features.Details.ExpenseDetail;
+import com.example.mrclean.moneymapper.Features.Details.IncomeDetail;
+>>>>>>> JulTest
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
@@ -24,6 +37,7 @@ import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity
+<<<<<<< HEAD
         implements AccountAdapter.AccountAdapterLongListener,
         AccountAdapter.AccountAdapterShortListener, AddTransaction.TransactionDateListener,
         AddTransaction.AddTransactionListener, DatePickerFragment.DateSetListener{
@@ -34,6 +48,15 @@ public class MainActivity extends AppCompatActivity
     Date dateTransaction;
 
     private AccountRealmDataMethods dataSource;
+=======
+        implements AccountAdapter.AccountAdapterLongListener, AccountAdapter.AccountAdapterShortListener, DetailFragment.OnFragmentInteractionListener,
+        BillDetail.OnDetailEdit ,ExpenseDetail.OnDetailEdit, IncomeDetail.OnFragmentInteractionListener{
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private static final String ID_NAME = "id_name";
+    private static final String ID_TYPE = "id_type";
+>>>>>>> JulTest
 
 
     //public static final int SCHEMA_VERSION = 1;
@@ -73,8 +96,51 @@ public class MainActivity extends AppCompatActivity
 
     //Long Listener from Account RecyclerView
     @Override
-    public void onLongClick(String name) {
-        Log.i(TAG, "onLongClick: Listener Received: " + name);
+    public void onLongClick(String name, String type) {
+        Log.i(TAG, "onLongClick: Listener Received: " + name +" this is the type: "+type);
+
+        Bundle detailName = new Bundle();
+        detailName.putString(ID_NAME,name);
+        switch (type){
+            case "Bill":
+                final BillDetail billDetail = new BillDetail();
+                billDetail.setArguments(detailName);
+                getFragmentManager()
+                .beginTransaction()
+                        .replace(R.id.fragment_holder, billDetail)
+                        .addToBackStack(null)
+                         .commit();
+                break;
+
+
+            case "Expense":
+                ExpenseDetail expenseDetail = new ExpenseDetail();
+                expenseDetail.setArguments(detailName);
+               getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_holder,expenseDetail)
+                       .addToBackStack(null)
+                        .commit();
+               break;
+
+
+            case "Income":
+                IncomeDetail incomeDetail = new IncomeDetail();
+                incomeDetail.setArguments(detailName);
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_holder,incomeDetail)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            default:
+                break;
+
+
+
+        }
+
+
     }
 
     //Short Listener from Account RecyclerView
@@ -136,5 +202,29 @@ public class MainActivity extends AppCompatActivity
         dataSource.addTransaction(name, dateTransaction, amount, reason);
         dataSource.close();
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onDetailEditClick(String account_id, String accType, Boolean isChanging) {
+        if (isChanging = true)
+        {
+            EditAccount(account_id,accType);
+        }
+
+    }
+    public void EditAccount (String account_id,String accountType)
+    {
+            AccountEditing accountEditing = new AccountEditing(account_id, accountType);
+
+
+
+
+    }
+
+
 }
 

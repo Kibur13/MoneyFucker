@@ -11,4 +11,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="income">Income</string>
     <string name="calculate_future_pay">Calculate Future Pay</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="priorty">Priorty</string>
+    <string name="button">Button</string>
+    <string name="changes">Changes</string>
+    <string name="status">Status</string>
+    <string name="regularity">Regularity</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="billed_on">Billed On</string>
+    <string name="due_date">Due Date</string>
+
 </resources>

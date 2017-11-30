@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class DatePickerFragment extends DialogFragment implements OnDateSetListener{
+public class DatePickerFragment extends android.app.DialogFragment implements OnDateSetListener{
 
     private static final String TAG = "DatePickerFragment";
 
@@ -29,6 +29,8 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
         super.onAttach(context);
         mListener = (DateSetListener) context;
     }
+
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

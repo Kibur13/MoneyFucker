@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
 
@@ -28,6 +31,13 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
 
     EditText textBillAmount;
     EditText textBillName;
+
+    private Account account;
+    private boolean changed;
+    private AccountRealmDataMethods dataSource;
+
+    private static final String ID_NAME = "id_name";
+    private String id_accountName;
 
 
     public NewBill() {
@@ -56,6 +66,36 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
     }
 
 
+<<<<<<< HEAD:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/AccountCreation/NewBill.java
+=======
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Bundle bundle = getArguments();
+        changed = false;
+
+        if (bundle != null) {
+            id_accountName = getArguments().getString(ID_NAME,"");
+            changed = true;
+
+            dataSource = new AccountRealmDataMethods();
+
+            dataSource.open();
+
+            Log.i(TAG, "(Editing Mode) Bill: " +id_accountName);
+
+
+            //Account account = new Account();
+            account = dataSource.getPrimaryKeyByName(id_accountName);
+
+            Log.i(TAG, "(Editing Mode) onCreate: this is what the datsource has " + account.getAmount() );
+            //mParam2 = getArguments().getString(ARG_PARAM2);
+            //Log.i(TAG, "Get arguements is not null!!  " + id_accountName + " and the other shit" + mParam2);
+        }
+
+    }
+
+>>>>>>> JulTest:MoneyMapper/app/src/main/java/com/example/mrclean/moneymapper/Accounts/AccountCreation/NewBill.java
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -154,6 +194,8 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
                 String billChanges = changesSpinner.getSelectedItem().toString();
                 String billStatus = statusSpinner.getSelectedItem().toString();
 
+                changed = false;
+
 
                 BillFinished(billName, billAmount, billPriority, billRegularity,
                         billWithdrawType, billChanges,billStatus);
@@ -180,6 +222,35 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
             }
 
         });
+
+
+        if(changed = true)
+        {
+            //String billName = textBillName.getText().toString();
+            textBillName.setText(account.getName());
+
+            //double billAmount = Double.parseDouble(textBillAmount.getText().toString());
+            textBillAmount.setText(String.valueOf(account.getAmount()));
+
+           // String billPriority = prioritySpinner.getSelectedItem().toString();
+            prioritySpinner.setSelection(priorityAdapter.getPosition(account.getPriority()));
+
+            //String billRegularity = regularitySpinner.getSelectedItem().toString();
+            regularitySpinner.setSelection(regularityAdapter.getPosition(account.getRegularity()));
+
+           // String billWithdrawType = withDrawTypesSpinner.getSelectedItem().toString();
+            withDrawTypesSpinner.setSelection(withDrawTypesAdapter
+                    .getPosition(String.valueOf(account.isAutoWithdrawl())));
+
+           // String billChanges = changesSpinner.getSelectedItem().toString();
+            changesSpinner.setSelection(changesAdapter
+                    .getPosition(String.valueOf(account.isAmountChanges())));
+
+            //String billStatus = statusSpinner.getSelectedItem().toString();
+            statusSpinner.setSelection(statusAdapter
+                    .getPosition(String.valueOf(account.isPaymentStatus())));
+
+        }
 
         return rootView;
     }

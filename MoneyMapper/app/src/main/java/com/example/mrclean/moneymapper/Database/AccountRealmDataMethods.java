@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.example.mrclean.moneymapper.Accounts.Account;
 import com.example.mrclean.moneymapper.Accounts.AccountFields;
+<<<<<<< HEAD
 import com.example.mrclean.moneymapper.Transactions.Transaction;
+=======
+>>>>>>> JulTest
 
 import java.util.Date;
 import java.util.List;
@@ -84,6 +87,28 @@ public class AccountRealmDataMethods {
 
             }
         });
+
+    }
+    public Account getPrimaryKeyByName(String id_Name){
+        Log.d(TAG, "getPrimaryKeyByName method running..  " +id_Name);
+        Account accounts = new Account();
+          accounts = AccountRealm.where(Account.class)
+                .equalTo("name",id_Name)
+                .findFirst();
+          if(accounts !=  null )
+          {
+              String amount = String.valueOf(accounts.getAmount());
+              Log.d(TAG, "This is account amount:" + amount);
+              return accounts;
+          }
+          else
+          {
+             //throw new NullPointerException();
+              Log.d(TAG, "Something went really bad " + id_Name);
+              return accounts;
+          }
+
+
 
     }
 
