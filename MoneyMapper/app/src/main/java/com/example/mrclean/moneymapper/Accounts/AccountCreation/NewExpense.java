@@ -24,7 +24,7 @@ import com.example.mrclean.moneymapper.R;
  * Created by mrclean on 10/12/17.
  */
 
-public class NewExpense extends Fragment implements AdapterView.OnItemSelectedListener{
+public class NewExpense extends android.app.Fragment implements AdapterView.OnItemSelectedListener{
 
 
     private static final String TAG = "NewExpense";

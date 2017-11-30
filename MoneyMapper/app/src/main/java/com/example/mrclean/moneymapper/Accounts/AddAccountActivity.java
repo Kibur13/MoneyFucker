@@ -44,7 +44,7 @@ public class AddAccountActivity extends AppCompatActivity
         Adding = new AccountRealmDataMethods();
 
         BillOrExpense billOrExpense = new BillOrExpense();
-        billOrExpense.show(getSupportFragmentManager(), "BILL_OR_EXPENSE");
+        billOrExpense.show(getFragmentManager(), "BILL_OR_EXPENSE");
 
 
 
@@ -80,7 +80,7 @@ public class AddAccountActivity extends AppCompatActivity
                 Log.i(TAG, "onBillOrExpenseChosen: Bill Chosen" + accountType);
                 //todo add the new Bill once the class is created
                 NewBill bill = new NewBill();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, bill)
                         .commit();
@@ -88,7 +88,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 2:
                 Log.i(TAG, "onBillOrExpenseChosen: Expense Chosen");
                 NewExpense expense = new NewExpense();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, expense)
                         .commit();
@@ -96,7 +96,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 3:
                 Log.i(TAG, "onBillOrExpenseChosen: Income Chosen");
                 NewIncome income = new NewIncome();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, income)
                         .commit();
@@ -104,7 +104,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 4:
                 Log.i(TAG, "onBillOrExpenseChosen: FuturePay Chosen");
                 FuturePayCalculator futurePayCalculator = new FuturePayCalculator();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, futurePayCalculator)
                         .commit();
@@ -206,9 +206,9 @@ public class AddAccountActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putString(DatePickerFragment.MESSAGE_KEY, tvLocation);
 
-        final DialogFragment picker = new DatePickerFragment();
+        final DatePickerFragment picker = new DatePickerFragment();
         picker.setArguments(args);
-        picker.show(getSupportFragmentManager(), "DATE_PICKER");
+        picker.show(getFragmentManager(), "DATE_PICKER");
 
         Log.i(TAG, "AddAccountActivity onDateButtonPressed: tvLocation = " + tvLocation);
     }

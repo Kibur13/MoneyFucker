@@ -21,7 +21,7 @@ import io.realm.OrderedRealmCollection;
 
 
 
-public class AccountListFragment extends Fragment {
+public class AccountListFragment extends android.app.Fragment {
 
     private List<Account> CopiedAccountList = new ArrayList<>();
     private RecyclerView accountRecyclerView;
@@ -44,6 +44,7 @@ public class AccountListFragment extends Fragment {
 
         dataSource.open();
         CopiedAccountList = dataSource.getAllAccounts();
+
     }
 
 

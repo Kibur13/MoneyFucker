@@ -101,7 +101,8 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
             @Override
             public boolean onLongClick(View v) {
                 String accountName = account.getName();
-                longListener.onLongClick(accountName);
+                String accountType = account.getType();
+                longListener.onLongClick(accountName, accountType);
                 return true;
             }
         });
@@ -114,7 +115,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
 
 
     public interface AccountAdapterLongListener{
-        void onLongClick(String name);
+        void onLongClick(String name, String type);
     }
 
 }

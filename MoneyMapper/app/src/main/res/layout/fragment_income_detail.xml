@@ -1,0 +1,159 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mrclean.moneymapper.Features.Details.IncomeDetail">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_name_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textSize="30sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/income_detail_name_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_amount_title_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textSize="30sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/income_detail_amount_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_regularity_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="@string/type"
+                android:textSize="30sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/income_detail_regularity_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_regularity_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="@string/regularity"
+                android:textSize="30sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/income_detail_regularity_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_directdeposit_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="@string/priorty"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/income_detail_directdeposit_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_status_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="Dispence Date"
+                android:textAlignment="textEnd"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/income_detail_status_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textSize="30sp" />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <TextView
+                android:id="@+id/income_detail_changes_title"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text="Dispence Date"
+                android:textAlignment="textEnd"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/income_detail_changes_holder"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="textEnd"
+                android:textSize="30sp" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+</FrameLayout>

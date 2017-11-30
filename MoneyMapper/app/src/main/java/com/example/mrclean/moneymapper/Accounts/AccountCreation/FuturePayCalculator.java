@@ -18,7 +18,7 @@ import com.example.mrclean.moneymapper.R;
 import java.util.Locale;
 
 
-public class FuturePayCalculator extends Fragment {
+public class FuturePayCalculator extends android.app.Fragment {
     private static final String TAG = "FuturePayCalculator";
 
     EditText etGrossPay;
