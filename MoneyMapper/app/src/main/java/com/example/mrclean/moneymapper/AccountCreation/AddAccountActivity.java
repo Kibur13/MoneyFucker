@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Accounts;
+package com.example.mrclean.moneymapper.AccountCreation;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -6,11 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.BillOrExpense;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.FuturePayCalculator;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewBill;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewExpense;
-import com.example.mrclean.moneymapper.Accounts.AccountCreation.NewIncome;
+
+import com.example.mrclean.moneymapper.FuturePayCalculator;
+import com.example.mrclean.moneymapper.Accounts.Account;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.DatePickerFragment;
 import com.example.mrclean.moneymapper.R;
@@ -24,7 +22,7 @@ public class AddAccountActivity extends AppCompatActivity
         NewBill.NewBillListener, DatePickerFragment.DateSetListener, NewBill.NewBillDateListener,
         NewExpense.DispenseDateListener, NewIncome.NewIncomeDateListener, NewIncome.NewIncomeListener{
 
-    private AccountRealmDataMethods Adding;
+    private AccountRealmDataMethods adding;
     private static final String TAG = "AddAccountActivity";
 
     Date billedOnDate;
@@ -41,15 +39,11 @@ public class AddAccountActivity extends AppCompatActivity
 
         //Realm init
         Realm.init(this);
-        Adding = new AccountRealmDataMethods();
+        adding = new AccountRealmDataMethods();
 
         BillOrExpense billOrExpense = new BillOrExpense();
         billOrExpense.show(getSupportFragmentManager(), "BILL_OR_EXPENSE");
 
-
-
-        //moves back to the previous page
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -58,7 +52,7 @@ public class AddAccountActivity extends AppCompatActivity
     @Override
     protected void onResume(){
         super.onResume();
-        Adding.open();
+        adding.open();
 
     }
 
@@ -66,7 +60,7 @@ public class AddAccountActivity extends AppCompatActivity
     @Override
     protected void onPause(){
         super.onPause();
-        Adding.close();
+        adding.close();
 
     }
 
@@ -78,9 +72,8 @@ public class AddAccountActivity extends AppCompatActivity
 
             case 1:
                 Log.i(TAG, "onBillOrExpenseChosen: Bill Chosen" + accountType);
-                //todo add the new Bill once the class is created
                 NewBill bill = new NewBill();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, bill)
                         .commit();
@@ -88,7 +81,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 2:
                 Log.i(TAG, "onBillOrExpenseChosen: Expense Chosen");
                 NewExpense expense = new NewExpense();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, expense)
                         .commit();
@@ -96,7 +89,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 3:
                 Log.i(TAG, "onBillOrExpenseChosen: Income Chosen");
                 NewIncome income = new NewIncome();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, income)
                         .commit();
@@ -104,7 +97,7 @@ public class AddAccountActivity extends AppCompatActivity
             case 4:
                 Log.i(TAG, "onBillOrExpenseChosen: FuturePay Chosen");
                 FuturePayCalculator futurePayCalculator = new FuturePayCalculator();
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .add(R.id.add_account_container, futurePayCalculator)
                         .commit();
@@ -129,7 +122,7 @@ public class AddAccountActivity extends AppCompatActivity
 
         Account account = new Account(name, type, dateBilled, billDue, amount, priority, regularity,
                 autoWithdraw, amountChanges, paymentStatus);
-        Adding.createAccount(account);
+        adding.createAccount(account);
 
         Log.i(TAG, "onExpenseFinish: user account added to realm");
     }
@@ -152,7 +145,7 @@ public class AddAccountActivity extends AppCompatActivity
 
         Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
                 nAutoWithDraw, nChanges, nStatus);
-        Adding.createAccount(account);
+        adding.createAccount(account);
 
 
     }
@@ -230,7 +223,7 @@ public class AddAccountActivity extends AppCompatActivity
         Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
                 nAutoWithDraw, nChanges, nStatus);
 
-        Adding.createAccount(account);
+        adding.createAccount(account);
 
 
     }

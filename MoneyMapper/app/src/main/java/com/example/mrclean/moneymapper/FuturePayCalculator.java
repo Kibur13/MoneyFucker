@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Accounts.AccountCreation;
+package com.example.mrclean.moneymapper;
 
 
 import android.content.Intent;
@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.mrclean.moneymapper.Accounts.AddAccountActivity;
+import com.example.mrclean.moneymapper.AccountCreation.AddAccountActivity;
 import com.example.mrclean.moneymapper.R;
 
 import java.util.Locale;
 
 
-public class FuturePayCalculator extends Fragment {
+public class FuturePayCalculator extends android.app.Fragment {
     private static final String TAG = "FuturePayCalculator";
 
     EditText etGrossPay;

@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Accounts.AccountCreation;
+package com.example.mrclean.moneymapper.AccountCreation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import com.example.mrclean.moneymapper.R;
  * Created by mrclean on 11/6/17.
  */
 
-public class NewIncome extends Fragment implements AdapterView.OnItemSelectedListener {
+public class NewIncome extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "NewIncome";
     private NewIncome.NewIncomeListener mListener;

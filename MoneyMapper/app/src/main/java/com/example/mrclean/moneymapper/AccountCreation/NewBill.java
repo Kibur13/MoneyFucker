@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Accounts.AccountCreation;
+package com.example.mrclean.moneymapper.AccountCreation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import com.example.mrclean.moneymapper.R;
 
 //AdapterView.OnItemSelectedListener is for the Spinners,
 // allows this Fragment to see what is selected
-public class NewBill extends Fragment implements AdapterView.OnItemSelectedListener {
+public class NewBill extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "NewBill";
     private NewBillListener mListener;
@@ -56,8 +56,6 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
     }
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -72,7 +70,7 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
         //priority spinner setup
         final Spinner prioritySpinner = (Spinner) rootView.findViewById(R.id.prioritySpinner);
         //ArrayAdapter that brings together the string array and the spinner layout
-        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.priorityLevel, android.R.layout.simple_spinner_dropdown_item);
         //layout to use when the list of choices appears
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,25 +79,25 @@ public class NewBill extends Fragment implements AdapterView.OnItemSelectedListe
 
         //regularity spinner setup
         final Spinner regularitySpinner = (Spinner) rootView.findViewById(R.id.regularitySpinner);
-        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.regularity, android.R.layout.simple_spinner_dropdown_item);
         regularitySpinner.setAdapter(regularityAdapter);
 
         //withdraw spinner setup
         final Spinner withDrawTypesSpinner = (Spinner) rootView.findViewById(R.id.withDrawTypeSpinner);
-        ArrayAdapter<CharSequence> withDrawTypesAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> withDrawTypesAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         withDrawTypesSpinner.setAdapter(withDrawTypesAdapter);
 
         //changes spinner setup
         final Spinner changesSpinner = (Spinner) rootView.findViewById(R.id.changesSpinner);
-        ArrayAdapter<CharSequence> changesAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> changesAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         changesSpinner.setAdapter(changesAdapter);
 
         //status spinner setup
         final Spinner statusSpinner = (Spinner) rootView.findViewById(R.id.statusSpinner);
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(statusAdapter);
 

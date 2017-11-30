@@ -5,14 +5,11 @@ import com.example.mrclean.moneymapper.Transactions.Transaction;
 import java.text.DateFormat;
 import java.util.Date;
 
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by mrclean on 8/29/17.
- */
+
 
 public class Account extends RealmObject {
 
@@ -30,9 +27,8 @@ public class Account extends RealmObject {
     private boolean paymentStatus;
     private RealmList <Transaction> transaction;
 
-    public RealmList<Transaction> getTransaction() {
-        return transaction;
-    }
+
+    public RealmList<Transaction> getTransaction() {return transaction;}
 
     public void setTransaction(RealmList<Transaction> transactions) {
         this.transaction = transactions;
@@ -148,18 +144,8 @@ public class Account extends RealmObject {
         this.autoWithDrawl = autoWithDrawl;
         this.amountChanges = amountChanges;
         this.paymentStatus = paymentStatus;
+        this.transaction = new RealmList<>();
     }
-
-
-//    public Account(Parcel in) {
-//    }
-
-
-//    public Account(String name, double amount)
-//    {
-//        this.name = name;
-//        this.amount = amount;
-//    }
 
 
     @Override

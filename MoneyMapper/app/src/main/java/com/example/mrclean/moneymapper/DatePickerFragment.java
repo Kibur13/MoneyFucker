@@ -6,15 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by mrclean on 10/12/17.
- */
 
 public class DatePickerFragment extends DialogFragment implements OnDateSetListener{
 
@@ -60,7 +56,6 @@ public class DatePickerFragment extends DialogFragment implements OnDateSetListe
             DateSet(c.getTime());
             Log.i(TAG, "onDateSet: date collected");
         }
-
 
         private void DateSet(Date date){
             if (mListener == null){

@@ -1,5 +1,8 @@
 package com.example.mrclean.moneymapper.Transactions;
 
+import android.support.annotation.Nullable;
+
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,11 +17,12 @@ public class Transaction extends RealmObject {
 
     private Date date;
     private double amount;
+
+    @Nullable
     private String reason;
 
 
     public Transaction(){
-
     }
 
     public Transaction(Date date, double amount, String reason){
@@ -43,6 +47,8 @@ public class Transaction extends RealmObject {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public String getDateString(){return DateFormat.getDateInstance().format(date);}
 
     public double getAmount() {
         return amount;

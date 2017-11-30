@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.Features;
+package com.example.mrclean.moneymapper.Accounts;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -7,18 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.mrclean.moneymapper.Accounts.Account;
+
 import com.example.mrclean.moneymapper.R;
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
 
-public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdapter.ViewHolder>{
+public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAdapter.ViewHolder>{
 
     private static final String TAG = AccountAdapter.class.getSimpleName();
     private AccountAdapterLongListener longListener;
     private AccountAdapterShortListener shortListener;
-
 
 
     public AccountAdapter(@Nullable OrderedRealmCollection<Account> data, boolean autoUpdate)
@@ -89,6 +88,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
         holder.accountType.setText(account.getType());
         holder.accountAmount.setText(String.valueOf(account.getAmount()));
 
+        //short click listener method
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +97,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
             }
         });
 
+        //long click listener method
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -108,13 +109,13 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account,AccountAdap
 
     }
 
+    //Short Listener from RecyclerView
     public interface AccountAdapterShortListener{
         void onShortClick(String name);
     }
 
-
+    //Long Listener from RecyclerView
     public interface AccountAdapterLongListener{
         void onLongClick(String name);
     }
-
 }
