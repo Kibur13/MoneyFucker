@@ -11,7 +11,9 @@ import com.example.mrclean.moneymapper.Accounts.AccountAdapter;
 import com.example.mrclean.moneymapper.Accounts.AccountListFragment;
 import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Transactions.AddTransaction;
+import com.example.mrclean.moneymapper.Transactions.DeleteTransaction;
 import com.example.mrclean.moneymapper.Transactions.Transaction;
+import com.example.mrclean.moneymapper.Transactions.TransactionAdapter;
 import com.example.mrclean.moneymapper.Transactions.TransactionListFragment;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
@@ -26,18 +28,17 @@ import io.realm.RealmConfiguration;
 public class MainActivity extends AppCompatActivity
         implements AccountAdapter.AccountAdapterLongListener,
         AccountAdapter.AccountAdapterShortListener, AddTransaction.TransactionDateListener,
-        AddTransaction.AddTransactionListener, DatePickerFragment.DateSetListener{
+        DatePickerFragment.DateSetListener, TransactionAdapter.TransactionAdapterShortListener,
+        TransactionAdapter.TransactionAdapterLongListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    //needed to pass information between AddTransaction methods
-    Date dateTransaction;
 
-    private AccountRealmDataMethods dataSource;
+    //needed to pass information between Transaction methods (RecyclerView and Add)
+    public static Date dateTransaction;
 
 
     //public static final int SCHEMA_VERSION = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity
                 .deleteRealmIfMigrationNeeded()
                 .build();
 
+
         Realm.setDefaultConfiguration(config);
 
         AccountListFragment AccListFrag = new AccountListFragment();
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity
     public void onLongClick(String name) {
         Log.i(TAG, "onLongClick: Listener Received: " + name);
     }
+
 
     //Short Listener from Account RecyclerView
     @Override
@@ -128,13 +131,35 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    //adds the new Transaction to Realm received from AddTransaction
+
+    //passes along the name of the Realm object and the transaction to be edited to AddTransaction
     @Override
-    public void onAddTransactionFinish(String name, Double amount, String reason) {
-        dataSource = new AccountRealmDataMethods();
-        dataSource.open();
-        dataSource.addTransaction(name, dateTransaction, amount, reason);
-        dataSource.close();
+    public void onTransactionShortClick(String accountName, String transactionID) {
+        Bundle args = new Bundle();
+        args.putString(AddTransaction.ACCOUNT_MESSAGE_KEY, accountName);
+        args.putString(AddTransaction.TRANSACTION_MESSAGE_KEY, transactionID);
+
+        final AddTransaction addTransaction = new AddTransaction();
+        addTransaction.setArguments(args);
+        getFragmentManager()
+                .beginTransaction()
+                .addToBackStack("TRANSACTION_LIST_FRAGMENT")
+                .replace(R.id.fragment_holder, addTransaction)
+                .commit();
+
+    }
+
+    @Override
+    public void onTransactionLongClick(String accountName, String transactionID) {
+
+        Bundle args = new Bundle();
+        args.putString(DeleteTransaction.ACCOUNT_MESSAGE_KEY, accountName);
+        args.putString(DeleteTransaction.TRANSACTION_MESSAGE_KEY, transactionID);
+
+        final DeleteTransaction deleteTransaction = new DeleteTransaction();
+        deleteTransaction.setArguments(args);
+        deleteTransaction.show(getFragmentManager(), "DELETE_TRANSACTION");
+
     }
 }
 

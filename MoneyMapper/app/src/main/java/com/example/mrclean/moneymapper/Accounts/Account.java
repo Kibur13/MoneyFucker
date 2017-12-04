@@ -15,7 +15,6 @@ public class Account extends RealmObject {
 
     @PrimaryKey
     private String name;
-
     private String type;
     private Date billedOnDate;
     private Date dateDue;
@@ -157,7 +156,5 @@ public class Account extends RealmObject {
     public String toString() {
         return "Account {" + "Name: "+name+", Amount: "+amount+" , Date: "
                 + DateFormat.getDateInstance().format(dateDue)+"}";
-
-        //return super.toString();
     }
 }
