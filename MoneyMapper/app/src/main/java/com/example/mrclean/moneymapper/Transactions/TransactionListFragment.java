@@ -26,10 +26,9 @@ public class TransactionListFragment extends Fragment {
     public static final String MESSAGE_KEY = "transaction_list_key";
     private List<Transaction> copiedTransactionList = new ArrayList<>();
 
-    private String transaction;
+    public static String accountName;
 
-    private AccountRealmDataMethods dataSource;
-
+    private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
 
 
     public TransactionListFragment() {
@@ -44,15 +43,14 @@ public class TransactionListFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null){
-            transaction = args.getString(MESSAGE_KEY);
+             accountName = args.getString(MESSAGE_KEY);
         }
 
-        Log.i(TAG, "onCreate: setting up Realm with Transaction Name: " + transaction);
+        Log.i(TAG, "onCreate: getting Transactions from Account: " + accountName);
 
-        dataSource = new AccountRealmDataMethods();
         dataSource.open();
 
-        copiedTransactionList = dataSource.getAllTransactions(transaction);
+        copiedTransactionList = dataSource.getAllTransactions(accountName);
 
         dataSource.close();
 
@@ -83,7 +81,7 @@ public class TransactionListFragment extends Fragment {
 
                 //passes along the name of the Realm object
                 Bundle args = new Bundle();
-                args.putString(AddTransaction.MESSAGE_KEY, transaction);
+                args.putString(AddTransaction.ACCOUNT_MESSAGE_KEY, accountName);
 
                 final AddTransaction addTransaction = new AddTransaction();
                 addTransaction.setArguments(args);

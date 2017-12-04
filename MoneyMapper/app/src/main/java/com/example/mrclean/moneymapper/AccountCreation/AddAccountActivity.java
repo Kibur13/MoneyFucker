@@ -43,7 +43,6 @@ public class AddAccountActivity extends AppCompatActivity
 
         BillOrExpense billOrExpense = new BillOrExpense();
         billOrExpense.show(getSupportFragmentManager(), "BILL_OR_EXPENSE");
-
     }
 
 
@@ -53,7 +52,6 @@ public class AddAccountActivity extends AppCompatActivity
     protected void onResume(){
         super.onResume();
         adding.open();
-
     }
 
     //closes account db
@@ -61,13 +59,14 @@ public class AddAccountActivity extends AppCompatActivity
     protected void onPause(){
         super.onPause();
         adding.close();
-
     }
 
 
     //Listener for new account type (BillorExpense) and chooses the correct fragment to use
     @Override
     public void onBillOrExpenseChosen(int accountType) {
+
+
         switch (accountType){
 
             case 1:
@@ -151,6 +150,29 @@ public class AddAccountActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onIncomeFinish(String name, double amount, String regularity, String autoWithDraw,
+                               String changes, String status) {
+
+        boolean nAutoWithDraw, nChanges, nStatus;
+
+        String priority = "High";
+        String type = "Income";
+        nAutoWithDraw = Objects.equals(autoWithDraw, "Yes");
+        nChanges = Objects.equals(changes, "Yes");
+        nStatus = Objects.equals(status, "Yes");
+
+
+
+        Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
+                nAutoWithDraw, nChanges, nStatus);
+
+        adding.createAccount(account);
+
+
+    }
+
+
     //return from DatePickerDialogFragment
     @Override
     public void onFragmentFinish(Date date, String tvPosition) {
@@ -193,6 +215,7 @@ public class AddAccountActivity extends AppCompatActivity
 
     }
 
+
     //return args from NewBill to be passed to DatePickerDialogFragment
     @Override
     public void onDateButtonPressed(String tvLocation) {
@@ -206,25 +229,5 @@ public class AddAccountActivity extends AppCompatActivity
         Log.i(TAG, "AddAccountActivity onDateButtonPressed: tvLocation = " + tvLocation);
     }
 
-    @Override
-    public void onIncomeFinish(String name, double amount, String regularity, String autoWithDraw,
-                               String changes, String status) {
 
-        boolean nAutoWithDraw, nChanges, nStatus;
-
-        String priority = "High";
-        String type = "Income";
-        nAutoWithDraw = Objects.equals(autoWithDraw, "Yes");
-        nChanges = Objects.equals(changes, "Yes");
-        nStatus = Objects.equals(status, "Yes");
-
-
-
-        Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
-                nAutoWithDraw, nChanges, nStatus);
-
-        adding.createAccount(account);
-
-
-    }
 }

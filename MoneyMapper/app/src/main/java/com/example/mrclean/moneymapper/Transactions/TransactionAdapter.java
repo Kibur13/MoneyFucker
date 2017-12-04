@@ -18,18 +18,19 @@ public class TransactionAdapter extends RealmRecyclerViewAdapter<Transaction, Tr
 
     private static final String TAG = "TransactionAdapter";
 
-    // TODO: 11/21/17 uncomment when the listeners are set up
-//    private AccountAdapterLongListener longListener;
-//    private AccountAdapterShortListener shortListener;
+    private TransactionAdapterShortListener shortListener;
+    private TransactionAdapterLongListener longListener;
 
 
-    public TransactionAdapter(@Nullable OrderedRealmCollection<Transaction> data, boolean autoUpdate)
+    //only uses Super and autoUpdate
+    TransactionAdapter(@Nullable OrderedRealmCollection<Transaction> data, boolean autoUpdate)
     {
         super(data,autoUpdate);
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    //creates up and instantiates textViews
+    static class ViewHolder extends RecyclerView.ViewHolder
     {
 
         // TODO: 11/21/17 need to change these to the correct types and places
@@ -48,31 +49,31 @@ public class TransactionAdapter extends RealmRecyclerViewAdapter<Transaction, Tr
             mView = itemView;
 
         }
-
     }
 
-    //listeners
-    // TODO: 11/21/17 uncomment this when the listeners are set up
-//    @Override
-//    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-//        super.onAttachedToRecyclerView(recyclerView);
-//
-//        //error handling and instantiating of Listeners
-//        if (recyclerView.getContext() instanceof AccountAdapterLongListener) {
-//            longListener = (AccountAdapterLongListener) recyclerView.getContext();
-//        } else {
-//            throw new RuntimeException(recyclerView.getContext().toString()
-//                    + " must implement AccountAdapterLongListener");
-//        }
-//        if (recyclerView.getContext() instanceof AccountAdapterLongListener) {
-//            shortListener = (AccountAdapterShortListener) recyclerView.getContext();
-//        } else {
-//            throw new RuntimeException(recyclerView.getContext().toString()
-//                    + " must implement AccountAdapterShortListener");
-//        }
-//    }
+
+    //listener check to make sure the calling method implements Listener Methods
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        //error handling and instantiating of Listeners
+        if (recyclerView.getContext() instanceof TransactionAdapterShortListener) {
+            shortListener = (TransactionAdapterShortListener) recyclerView.getContext();
+        } else {
+            throw new RuntimeException(recyclerView.getContext().toString()
+                    + " must implement AccountAdapterLongListener");
+        }
+        if (recyclerView.getContext() instanceof TransactionAdapterLongListener) {
+            longListener = (TransactionAdapterLongListener) recyclerView.getContext();
+        } else {
+            throw new RuntimeException(recyclerView.getContext().toString()
+                    + " must implement AccountAdapterLongListener");
+        }
+    }
 
 
+    //chooses view to inflate
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v  = LayoutInflater.from(parent.getContext())
@@ -81,51 +82,51 @@ public class TransactionAdapter extends RealmRecyclerViewAdapter<Transaction, Tr
     }
 
 
-
+    //populates the Transaction Object inside of the RecyclerView and sends pos if clicked
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Transaction transaction = getItem( position);
-
+        final Transaction transaction = getItem(position);
 
         if (transaction != null) {
             holder.tvTransactionAmount.setText(String.valueOf(transaction.getAmount()));
             holder.tvTransactionDate.setText(transaction.getDateString());
             holder.tvTransactionReason.setText(transaction.getReason());
-        }else Log.i(TAG, "onBindViewHolder: transaction is null");
+        }else Log.i(TAG, "onBindViewHolder: no transactions");
 
 
+        //listener sends ID of Transaction clicked on to the Listener interface
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String accountName = TransactionListFragment.accountName;
+                String transactionID = transaction.getId();
+                shortListener.onTransactionShortClick(accountName, transactionID);
+                Log.i(TAG, "onClick: accountName =" + accountName +"\n getID =" + transactionID);
+            }
+        });
 
-        //listeners
-        // TODO: 11/21/17 uncomment once the listeners are set up
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String accountName = transaction.getId();
-//                shortListener.onShortClick(accountName);
-//            }
-//        });
-//
-//        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                String accountName = transaction.getId();
-//                longListener.onLongClick(accountName);
-//
-//                return true;
-//            }
-//        });
-
+        //listener sends ID of Transaction clicked on to the Listener interface
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String accountName = TransactionListFragment.accountName;
+                String transactionID = transaction.getId();
+                longListener.onTransactionLongClick(accountName, transactionID);
+                Log.i(TAG, "onClick: accountName =" + accountName +"\n getID =" + transactionID);
+                return true;
+            }
+        });
     }
 
-    // TODO: 11/21/17 uncomment when the listeners are set up
-//    //Short Listener from RecyclerView
-//    public interface AccountAdapterShortListener{
-//        void onShortClick(String name);
-//    }
-//
-//    //Long Listener from RecyclerView
-//    public interface AccountAdapterLongListener{
-//        void onLongClick(String name);
-//    }
-//
+
+    //Short Listener for Transaction list.  Sends accountName and transactionID
+    public interface TransactionAdapterShortListener{
+        void onTransactionShortClick(String accountName, String transactionID);
+    }
+
+    //Long Listener for Transaction List.  Sends accountName and transactionID
+    public interface TransactionAdapterLongListener{
+        void onTransactionLongClick(String accountName, String transactionID);
+    }
+
 }
