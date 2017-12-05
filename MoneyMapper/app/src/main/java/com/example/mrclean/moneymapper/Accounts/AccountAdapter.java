@@ -20,12 +20,14 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAda
     private AccountAdapterShortListener shortListener;
 
 
+    //super.autoUpdate
     public AccountAdapter(@Nullable OrderedRealmCollection<Account> data, boolean autoUpdate)
     {
         super(data,autoUpdate);
     }
 
 
+    //populates TextViews
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView accountName;
@@ -47,6 +49,8 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAda
 
     }
 
+
+    //instantiates Listeners
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -67,6 +71,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAda
     }
 
 
+    //inflates View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v  = LayoutInflater.from(parent.getContext())
@@ -75,7 +80,7 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAda
     }
 
 
-
+    //sets values for accounts and sets up onClickListeners
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Account account = getItem( position);
@@ -109,10 +114,12 @@ public class AccountAdapter extends RealmRecyclerViewAdapter<Account, AccountAda
 
     }
 
+
     //Short Listener from RecyclerView
     public interface AccountAdapterShortListener{
         void onShortClick(String name);
     }
+
 
     //Long Listener from RecyclerView
     public interface AccountAdapterLongListener{

@@ -8,28 +8,25 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.mrclean.moneymapper.FuturePayCalculator;
-import com.example.mrclean.moneymapper.Accounts.Account;
-import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.DatePickerFragment;
 import com.example.mrclean.moneymapper.R;
+
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Objects;
-import io.realm.Realm;
+
 
 public class AddAccountActivity extends AppCompatActivity
-        implements BillOrExpense.BillOrExpenseListener, NewExpense.NewExpenseListener,
-        NewBill.NewBillListener, DatePickerFragment.DateSetListener, NewBill.NewBillDateListener,
-        NewExpense.DispenseDateListener, NewIncome.NewIncomeDateListener, NewIncome.NewIncomeListener{
+        implements BillOrExpense.BillOrExpenseListener,
+         DatePickerFragment.DateSetListener, NewBill.NewBillDateListener,
+        NewExpense.DispenseDateListener, NewIncome.NewIncomeDateListener{
 
-    private AccountRealmDataMethods adding;
     private static final String TAG = "AddAccountActivity";
 
-    Date billedOnDate;
-    Date billDue;
+    public static Date billedOnDate;
+    public static Date billDue;
 
 
-
+    //launches BillOrExpense
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,39 +34,19 @@ public class AddAccountActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Realm init
-        Realm.init(this);
-        adding = new AccountRealmDataMethods();
-
         BillOrExpense billOrExpense = new BillOrExpense();
         billOrExpense.show(getSupportFragmentManager(), "BILL_OR_EXPENSE");
     }
 
 
-
-    //opens account db
+    //Listener for new account type (BillOrExpense) and chooses the correct fragment to use
     @Override
-    protected void onResume(){
-        super.onResume();
-        adding.open();
-    }
-
-    //closes account db
-    @Override
-    protected void onPause(){
-        super.onPause();
-        adding.close();
-    }
-
-
-    //Listener for new account type (BillorExpense) and chooses the correct fragment to use
-    @Override
-    public void onBillOrExpenseChosen(int accountType) {
+    public void onBillOrExpenseChosen(String accountType) {
 
 
         switch (accountType){
 
-            case 1:
+            case "BILL":
                 Log.i(TAG, "onBillOrExpenseChosen: Bill Chosen" + accountType);
                 NewBill bill = new NewBill();
                 getFragmentManager()
@@ -77,7 +54,7 @@ public class AddAccountActivity extends AppCompatActivity
                         .add(R.id.add_account_container, bill)
                         .commit();
                 break;
-            case 2:
+            case "EXPENSE":
                 Log.i(TAG, "onBillOrExpenseChosen: Expense Chosen");
                 NewExpense expense = new NewExpense();
                 getFragmentManager()
@@ -85,7 +62,7 @@ public class AddAccountActivity extends AppCompatActivity
                         .add(R.id.add_account_container, expense)
                         .commit();
                 break;
-            case 3:
+            case "INCOME":
                 Log.i(TAG, "onBillOrExpenseChosen: Income Chosen");
                 NewIncome income = new NewIncome();
                 getFragmentManager()
@@ -93,7 +70,7 @@ public class AddAccountActivity extends AppCompatActivity
                         .add(R.id.add_account_container, income)
                         .commit();
                 break;
-            case 4:
+            case "FUTURE_PAY":
                 Log.i(TAG, "onBillOrExpenseChosen: FuturePay Chosen");
                 FuturePayCalculator futurePayCalculator = new FuturePayCalculator();
                 getFragmentManager()
@@ -105,71 +82,6 @@ public class AddAccountActivity extends AppCompatActivity
 
 
         }
-    }
-
-
-    //Listener for when the user finishes creating the Expense
-    @Override
-    public void onExpenseFinish(String name, Double amount, String priority,
-                                String regularity) {
-
-        String type = "Expense";
-        Date dateBilled = null;
-        boolean autoWithdraw = true;
-        boolean amountChanges = false;
-        boolean paymentStatus = true;
-
-        Account account = new Account(name, type, dateBilled, billDue, amount, priority, regularity,
-                autoWithdraw, amountChanges, paymentStatus);
-        adding.createAccount(account);
-
-        Log.i(TAG, "onExpenseFinish: user account added to realm");
-    }
-
-
-    //when the NewBill Fragment's "Done" button is pressed
-    @Override
-    public void onBillFinish(String name, double amount,
-                             String priority, String regularity, String autoWithDraw,
-                             String changes, String status) {
-
-        boolean nAutoWithDraw, nChanges, nStatus;
-
-        String type = "Bill";
-        nAutoWithDraw = Objects.equals(autoWithDraw, "Yes");
-        nChanges = Objects.equals(changes, "Yes");
-        nStatus = Objects.equals(status, "Yes");
-
-
-
-        Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
-                nAutoWithDraw, nChanges, nStatus);
-        adding.createAccount(account);
-
-
-    }
-
-
-    @Override
-    public void onIncomeFinish(String name, double amount, String regularity, String autoWithDraw,
-                               String changes, String status) {
-
-        boolean nAutoWithDraw, nChanges, nStatus;
-
-        String priority = "High";
-        String type = "Income";
-        nAutoWithDraw = Objects.equals(autoWithDraw, "Yes");
-        nChanges = Objects.equals(changes, "Yes");
-        nStatus = Objects.equals(status, "Yes");
-
-
-
-        Account account = new Account(name, type, billedOnDate, billDue, amount, priority, regularity,
-                nAutoWithDraw, nChanges, nStatus);
-
-        adding.createAccount(account);
-
-
     }
 
 

@@ -142,10 +142,7 @@ public class AddTransaction extends Fragment {
                 args.putString(TransactionListFragment.MESSAGE_KEY, accountName);
 
                 transactionListFragment.setArguments(args);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_holder, transactionListFragment)
-                        .commit();
+                getFragmentManager().popBackStackImmediate();
             }
         });
 

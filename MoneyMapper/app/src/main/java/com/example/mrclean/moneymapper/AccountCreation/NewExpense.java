@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,38 +15,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
 
 
-/**
- * Created by mrclean on 10/12/17.
- */
-
 public class NewExpense extends android.app.Fragment implements AdapterView.OnItemSelectedListener{
 
-
     private static final String TAG = "NewExpense";
-    private NewExpenseListener mListener;
+
     private DispenseDateListener dateListener;
+
+    private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
 
     EditText textExpenseAmount;
     EditText textExpenseName;
     TextView tvDateHolder;
 
 
+    //opens Realm and instantiates DateListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        //needed for callback method / listener
-        //error handling for (this)fragment finish
-        if (context instanceof NewBill.NewBillListener) {
-            mListener = (NewExpense.NewExpenseListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement NewBillListener");
-        }
+        dataSource.open();
 
         //error handling for Date selection
         if (context instanceof DispenseDateListener) {
@@ -67,7 +60,7 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.setup_expense, container, false);
+        final View rootView = inflater.inflate(R.layout.setup_expense, container, false);
 
         textExpenseName = (EditText) rootView.findViewById(R.id.expenseName);
         textExpenseAmount = (EditText) rootView.findViewById(R.id.expenseAmount);
@@ -78,7 +71,7 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
         //priority spinner setup
         final Spinner prioritySpinner = (Spinner) rootView.findViewById(R.id.prioritySpinner);
         //ArrayAdapter that brings together the string array and the spinner layout
-        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.priorityLevel, android.R.layout.simple_spinner_dropdown_item);
         //layout to use when the list of choices appears
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,7 +80,7 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
 
         //regularity spinner setup
         final Spinner regularitySpinner = (Spinner) rootView.findViewById(R.id.regularitySpinner);
-        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.regularity, android.R.layout.simple_spinner_dropdown_item);
         regularitySpinner.setAdapter(regularityAdapter);
 
@@ -122,24 +115,22 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
                 String expensePriority = prioritySpinner.getSelectedItem().toString();
                 String expenseRegularity = regularitySpinner.getSelectedItem().toString();
 
-                ExpenseFinished(expenseName, expenseAmount, expensePriority, expenseRegularity);
-
                 //logs output of current values at time of collections
                 Log.i(TAG, "onNewExpenseDone: \nName: " + expenseName
                         + "\nAmount: " + expenseAmount
                         + "\nPriority: " + expensePriority
                         + "\nRegularity: " + expenseRegularity);
 
-            }
+                String type = "Expense";
 
-            private void ExpenseFinished(String name, Double amount,
-                                         String priority, String regularity) {
-                if (mListener == null){
-                    throw new AssertionError();
-                }
-                mListener.onExpenseFinish( name, amount, priority, regularity);
+                Account account = new Account(expenseName, type, null,
+                        AddAccountActivity.billDue, expenseAmount, expensePriority, expenseRegularity,
+                        true, false, true);
+                dataSource.createAccount(account);
 
-                Intent backToMain = new Intent(getContext(), MainActivity.class);
+                Log.i(TAG, "onExpenseFinish: user account added to realm");
+
+                Intent backToMain = new Intent(rootView.getContext(), MainActivity.class);
                 startActivity(backToMain);
             }
         });
@@ -147,11 +138,13 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
         return rootView;
     }
 
+    //closes Realm
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        dataSource.close();
     }
+
 
     //captures user input from the spinner
     @Override
@@ -159,20 +152,15 @@ public class NewExpense extends android.app.Fragment implements AdapterView.OnIt
         parent.getItemAtPosition(position);
     }
 
+
     //required by Spinner / onItemSelected
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
-    //callback method
-    public interface NewExpenseListener{
-        void onExpenseFinish(String name, Double amount,
-                             String priority, String regularity);
-    }
 
-
-    //sends account data to AddAccountActivity
+    //sends DatePicker data to AddAccountActivity
     public interface DispenseDateListener{
         void onDateButtonPressed(String tvLocation);
     }

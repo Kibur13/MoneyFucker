@@ -15,7 +15,7 @@ import com.example.mrclean.moneymapper.R;
 public class BillOrExpense extends DialogFragment {
     private static final String TAG = "BillOrExpense";
     private BillOrExpenseListener mListener;
-    public int accountType = 0;
+    public String accountType;
 
     @Override
     public void onAttach(Context context) {
@@ -35,7 +35,7 @@ public class BillOrExpense extends DialogFragment {
         btnBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accountType = 1;
+                accountType = "BILL";
                 mListener.onBillOrExpenseChosen(accountType);
                 Log.i(TAG, "btnBill onClick: new bill selected");
                 dismiss();
@@ -48,7 +48,7 @@ public class BillOrExpense extends DialogFragment {
         btnExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accountType = 2;
+                accountType = "EXPENSE";
                 mListener.onBillOrExpenseChosen(accountType);
                 Log.i(TAG, "btnExpense onClick: new expense selected");
                 dismiss();
@@ -61,7 +61,7 @@ public class BillOrExpense extends DialogFragment {
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accountType = 3;
+                accountType = "INCOME";
                 mListener.onBillOrExpenseChosen(accountType);
                 Log.i(TAG, "btnIncome onClick: new income selected");
                 dismiss();
@@ -74,7 +74,7 @@ public class BillOrExpense extends DialogFragment {
         btnFuturePay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accountType = 4;
+                accountType = "FUTURE_PAY";
                 mListener.onBillOrExpenseChosen(accountType);
                 Log.i(TAG, "btnFuturePay onClick: Future Pay Calculator selected");
                 dismiss();
@@ -86,7 +86,7 @@ public class BillOrExpense extends DialogFragment {
 
     //sends data back to MainActivity
     public interface BillOrExpenseListener{
-        void onBillOrExpenseChosen(int accountType);
+        void onBillOrExpenseChosen(String accountType);
     }
 
 }

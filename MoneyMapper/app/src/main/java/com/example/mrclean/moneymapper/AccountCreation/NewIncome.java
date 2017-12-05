@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +14,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
 
-/**
- * Created by mrclean on 11/6/17.
- */
+import java.util.Objects;
+
 
 public class NewIncome extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "NewIncome";
-    private NewIncome.NewIncomeListener mListener;
+
     private NewIncome.NewIncomeDateListener dateListener;
+
+    private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
+
     EditText textIncomeAmount;
     EditText textIncomeName;
 
@@ -36,17 +39,13 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
     }
 
 
+    //opens Realm and instantiates DateListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        //error handling for when NewIncome(this) fragment finish
-        if (context instanceof NewIncome.NewIncomeListener) {
-            mListener = (NewIncome.NewIncomeListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement NewIncomeListener");
-        }
+        dataSource.open();
+
         //error handling for Date selection
         if (context instanceof NewIncome.NewIncomeDateListener) {
             dateListener = (NewIncome.NewIncomeDateListener) context;
@@ -62,32 +61,32 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.setup_income, container, false);
+        final View rootView = inflater.inflate(R.layout.setup_income, container, false);
 
         textIncomeName = (EditText) rootView.findViewById(R.id.incomeName);
         textIncomeAmount = (EditText) rootView.findViewById(R.id.incomeAmount);
 
         //regularity spinner setup
         final Spinner regularitySpinner = (Spinner) rootView.findViewById(R.id.regularitySpinner);
-        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> regularityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.regularity, android.R.layout.simple_spinner_dropdown_item);
         regularitySpinner.setAdapter(regularityAdapter);
 
         //withdraw spinner setup
         final Spinner withDrawTypesSpinner = (Spinner) rootView.findViewById(R.id.withDrawTypeSpinner);
-        ArrayAdapter<CharSequence> withDrawTypesAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> withDrawTypesAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         withDrawTypesSpinner.setAdapter(withDrawTypesAdapter);
 
         //changes spinner setup
         final Spinner changesSpinner = (Spinner) rootView.findViewById(R.id.changesSpinner);
-        ArrayAdapter<CharSequence> changesAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> changesAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         changesSpinner.setAdapter(changesAdapter);
 
         //status spinner setup
         final Spinner statusSpinner = (Spinner) rootView.findViewById(R.id.statusSpinner);
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
                 R.array.yesOrNo, android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(statusAdapter);
 
@@ -140,28 +139,28 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
                 String incomeChanges = changesSpinner.getSelectedItem().toString();
                 String incomeStatus = statusSpinner.getSelectedItem().toString();
 
-
-                IncomeFinished(incomeName, incomeAmount, incomeRegularity,
-                        incomeWithdrawType, incomeChanges, incomeStatus);
-
                 //logs output of current values at time of collections
                 Log.i(TAG, "onNewIncomeDone: \nName: " + incomeName
                         + "\nAmount: " + incomeAmount
                         + "\nRegularity: " + incomeRegularity);
 
-            }
 
-            private void IncomeFinished(String name, Double amount,
-                                         String regularity,
-                                         String billWithdrawType, String changes, String status) {
+                boolean nAutoWithDraw, nChanges, nStatus;
 
-                if (mListener == null){
-                    throw new AssertionError();
-                }
-                mListener.onIncomeFinish( name, amount, regularity,
-                        billWithdrawType, changes, status);
+                String priority = "High";
+                String type = "Income";
+                nAutoWithDraw = Objects.equals(incomeWithdrawType, "Yes");
+                nChanges = Objects.equals(incomeChanges, "Yes");
+                nStatus = Objects.equals(incomeStatus, "Yes");
 
-                Intent backToMain = new Intent(getContext(), MainActivity.class);
+
+                Account account = new Account(incomeName, type, AddAccountActivity.billedOnDate,
+                        AddAccountActivity.billDue, incomeAmount, priority, incomeRegularity,
+                        nAutoWithDraw, nChanges, nStatus);
+
+                dataSource.createAccount(account);
+
+                Intent backToMain = new Intent(rootView.getContext(), MainActivity.class);
                 startActivity(backToMain);
             }
         });
@@ -172,11 +171,13 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
     }
 
 
+    //closes Realm
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        dataSource.close();
     }
+
 
     //used for spinner, listens for which item was selected
     @Override
@@ -184,23 +185,16 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
 
     }
 
+
     //required by Spinner
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
+
 
     //sends position of DatePicker button
     public interface NewIncomeDateListener{
         void onDateButtonPressed(String tvLocation);
     }
-
-    //sends account data to AddAccountActivity
-    public interface NewIncomeListener {
-        void onIncomeFinish(String name, double amount,
-                            String regularity, String autoWithDraw,
-                            String changes, String status);
-    }
-
 
 }

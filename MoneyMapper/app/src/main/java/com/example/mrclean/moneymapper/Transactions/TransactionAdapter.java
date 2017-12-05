@@ -22,7 +22,7 @@ public class TransactionAdapter extends RealmRecyclerViewAdapter<Transaction, Tr
     private TransactionAdapterLongListener longListener;
 
 
-    //only uses Super and autoUpdate
+    //Super and autoUpdate
     TransactionAdapter(@Nullable OrderedRealmCollection<Transaction> data, boolean autoUpdate)
     {
         super(data,autoUpdate);
