@@ -1,6 +1,7 @@
 package com.example.mrclean.moneymapper.Transactions;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +32,7 @@ public class TransactionListFragment extends Fragment {
     private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
 
 
+    //required empty
     public TransactionListFragment() {
         // Required empty public constructor
     }
@@ -52,12 +54,11 @@ public class TransactionListFragment extends Fragment {
 
         copiedTransactionList = dataSource.getAllTransactions(accountName);
 
-        dataSource.close();
 
     }
 
 
-    //      Setting up the RecyclerView
+    //Setting up the RecyclerView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RecyclerView transactionRecyclerView;
@@ -102,6 +103,7 @@ public class TransactionListFragment extends Fragment {
     }
 
 
+    //closes Realm
     @Override
     public void onDestroy() {
         super.onDestroy();

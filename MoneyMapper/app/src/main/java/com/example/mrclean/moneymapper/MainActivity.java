@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         transactionListFragment.setArguments(args);
         getFragmentManager()
                 .beginTransaction()
-                .addToBackStack("ACCOUNT_LIST_FRAGMENT")
+                .addToBackStack("MAIN_ACTIVITY")
                 .replace(R.id.fragment_holder, transactionListFragment)
                 .commit();
 
@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 
     }
+
 
     @Override
     public void onTransactionLongClick(String accountName, String transactionID) {

@@ -14,8 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.mrclean.moneymapper.Accounts.Account;
+import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.MainActivity;
 import com.example.mrclean.moneymapper.R;
+
+import java.util.Objects;
 
 
 //AdapterView.OnItemSelectedListener is for the Spinners,
@@ -23,8 +28,9 @@ import com.example.mrclean.moneymapper.R;
 public class NewBill extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "NewBill";
-    private NewBillListener mListener;
     private NewBillDateListener dateListener;
+
+    private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
 
     EditText textBillAmount;
     EditText textBillName;
@@ -35,17 +41,12 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
     }
 
 
+    //opens realm and instantiates DateListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        dataSource.open();
 
-        //error handling for when NewBill(this) fragment finish
-        if (context instanceof NewBillListener) {
-            mListener = (NewBillListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement NewBillListener");
-        }
         //error handling for Date selection
         if (context instanceof NewBillDateListener) {
             dateListener = (NewBillDateListener) context;
@@ -61,7 +62,7 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.setup_bill, container, false);
+        final View rootView = inflater.inflate(R.layout.setup_bill, container, false);
 
         textBillName = (EditText) rootView.findViewById(R.id.billName);
         textBillAmount = (EditText) rootView.findViewById(R.id.billAmount);
@@ -117,9 +118,6 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
                     dateListener.onDateButtonPressed(dueDate);
                     Log.i(TAG, "NewBill dueDate: button pressed and Listener activated ");
                 }
-
-                //// TODO: 10/30/17 displays datepicker dialog fragment
-
             }
         });
 
@@ -155,27 +153,27 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
                 String billStatus = statusSpinner.getSelectedItem().toString();
 
 
-                BillFinished(billName, billAmount, billPriority, billRegularity,
-                        billWithdrawType, billChanges,billStatus);
-
                 //logs output of current values at time of collections
                 Log.i(TAG, "onNewBillDone: \nName: " + billName
                         + "\nAmount: " + billAmount
                         + "\nPriority: " + billPriority
                         + "\nRegularity: " + billRegularity);
-            }
 
-            private void BillFinished(String name, Double amount,
-                                      String priority, String regularity,
-                                      String billWithdrawType, String changes, String status) {
+                boolean nAutoWithDraw, nChanges, nStatus;
 
-                if (mListener == null){
-                    throw new AssertionError();
-                }
-                mListener.onBillFinish( name, amount, priority, regularity,
-                        billWithdrawType, changes, status);
+                String type = "Bill";
+                nAutoWithDraw = Objects.equals(billWithdrawType, "Yes");
+                nChanges = Objects.equals(billChanges, "Yes");
+                nStatus = Objects.equals(billStatus, "Yes");
 
-                Intent backToMain = new Intent(getContext(), MainActivity.class);
+                //adds the information to a new account then adds it to Realm
+                Account account = new Account(billName, type, AddAccountActivity.billedOnDate,
+                        AddAccountActivity.billDue, billAmount, billPriority, billRegularity,
+                        nAutoWithDraw, nChanges, nStatus);
+                dataSource.createAccount(account);
+
+
+                Intent backToMain = new Intent(rootView.getContext(), MainActivity.class);
                 startActivity(backToMain);
             }
 
@@ -185,22 +183,21 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
     }
 
 
+    //closes Realm
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        dataSource.close();
     }
 
     //required by Spinner
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     //required by Spinner
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     //sends position of DatePicker button
@@ -208,10 +205,4 @@ public class NewBill extends android.app.Fragment implements AdapterView.OnItemS
         void onDateButtonPressed(String tvLocation);
     }
 
-    //sends account data to AddAccountActivity
-    public interface NewBillListener {
-        void onBillFinish(String name, double amount,
-                          String priority, String regularity, String autoWithDraw,
-                          String changes, String status);
-    }
 }
