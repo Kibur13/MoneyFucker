@@ -6,12 +6,12 @@ import android.util.Log;
 import com.example.mrclean.moneymapper.Accounts.Account;
 import com.example.mrclean.moneymapper.Accounts.AccountFields;
 import com.example.mrclean.moneymapper.Transactions.Transaction;
+import com.example.mrclean.moneymapper.Transactions.TransactionFields;
 
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 
@@ -54,29 +54,22 @@ public class AccountRealmDataMethods {
 
     //lists all accounts
     public List<Account> getAllAccounts() {
-        return accountRealm.where(Account.class).findAll();
+        return accountRealm.where(Account.class).findAllSorted(AccountFields.DATE_DUE);
     }
 
 
     //finds a specific Transaction
     public Transaction getTransaction(String accountName, String transactionID){
-        Account account;
-        Transaction transaction= null;
-        RealmList<Transaction> transactions;
 
-        account = accountRealm.where(Account.class).equalTo(AccountFields.NAME, accountName).findFirst();
+        Transaction transaction;
 
-        transactions = account.getTransaction();
-
-        boolean transactionFound = false;
-        do {
-            for (int i = 0; i < transactions.size(); i++){
-                if (transactions.get(i).getId().equals(transactionID)){
-                    transaction = transactions.get(i);
-                    transactionFound = true;
-                }
-            }
-        }while (!transactionFound);
+        transaction = accountRealm.where(Account.class)
+                .equalTo(AccountFields.NAME, accountName)
+                .findFirst()
+                .getTransaction()
+                .where()
+                .equalTo(TransactionFields.ID, transactionID)
+                .findFirst();
 
         return transaction;
     }
@@ -85,12 +78,14 @@ public class AccountRealmDataMethods {
     //finds all the transactions that are associated with a specific Account
     public List<Transaction> getAllTransactions(String name){
 
-        Account account;
         List<Transaction> transactions;
 
-        account = accountRealm.where(Account.class).equalTo(AccountFields.NAME, name).findFirst();
-            transactions = account.getTransaction();
-            return transactions;
+        transactions = accountRealm.where(Account.class)
+                .equalTo(AccountFields.NAME, name)
+                .findFirst()
+                .getTransaction();
+
+        return transactions;
     }
 
 
@@ -114,7 +109,8 @@ public class AccountRealmDataMethods {
 
 
     //adds a Transaction to a specific string Name
-    public void addTransaction(final String realmName, final Date date, final double amount, final String reason){
+    public void addTransaction(final String realmName, final Date date, final double amount,
+                               final String reason){
 
         accountRealm.executeTransaction(new Realm.Transaction() {
 
@@ -134,34 +130,26 @@ public class AccountRealmDataMethods {
     //deletes Transaction from realm
     public void deleteTransaction(String accountName, final String transactionID){
 
-        final Account account;
+        //final Account account;
+        final Transaction transactionToDelete;
 
-        account = accountRealm.where(Account.class).equalTo(AccountFields.NAME, accountName).findFirst();
-        final RealmList<Transaction> transactions = account.getTransaction();
+        transactionToDelete = accountRealm.where(Account.class)
+                .equalTo(AccountFields.NAME, accountName)
+                .findFirst()
+                .getTransaction()
+                .where()
+                .equalTo(TransactionFields.ID, transactionID)
+                .findFirst();
 
         accountRealm.executeTransaction(new Realm.Transaction() {
 
             @Override
             public void execute(Realm realm) {
-                int position = 0;
 
-                boolean transactionFound = false;
-                do {
-                    for (int i = 0; i < transactions.size(); i++){
-                        if (transactions.get(i).getId().equals(transactionID)){
-                            position = i;
-                            transactionFound = true;
-                        }
-                    }
-                }while (!transactionFound);
+                transactionToDelete.deleteFromRealm();
 
-                Log.i(TAG, "execute: position: " + position);
-                account.getTransaction().deleteFromRealm(position);
             }
         });
-
-
-
     }
 
 

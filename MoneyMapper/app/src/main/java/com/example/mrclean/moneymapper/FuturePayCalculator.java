@@ -3,7 +3,6 @@ package com.example.mrclean.moneymapper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.mrclean.moneymapper.AccountCreation.AddAccountActivity;
-import com.example.mrclean.moneymapper.R;
+import com.example.mrclean.moneymapper.accountCreation.AddAccountActivity;
 
 import java.util.Locale;
 

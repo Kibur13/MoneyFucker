@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.AccountCreation;
+package com.example.mrclean.moneymapper.accountCreation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,36 +22,36 @@ import com.example.mrclean.moneymapper.R;
 import java.util.Objects;
 
 
-public class NewIncome extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
+//AdapterView.OnItemSelectedListener is for the Spinners,
+// allows this Fragment to see what is selected
+public class NewBill extends android.app.Fragment implements AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = "NewIncome";
-
-    private NewIncome.NewIncomeDateListener dateListener;
+    private static final String TAG = "NewBill";
+    private NewBillDateListener dateListener;
 
     private AccountRealmDataMethods dataSource = new AccountRealmDataMethods();
 
-    EditText textIncomeAmount;
-    EditText textIncomeName;
+    EditText textBillAmount;
+    EditText textBillName;
 
 
-    public NewIncome() {
+    public NewBill() {
         // Required empty public constructor
     }
 
 
-    //opens Realm and instantiates DateListener
+    //opens realm and instantiates DateListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         dataSource.open();
 
         //error handling for Date selection
-        if (context instanceof NewIncome.NewIncomeDateListener) {
-            dateListener = (NewIncome.NewIncomeDateListener) context;
+        if (context instanceof NewBillDateListener) {
+            dateListener = (NewBillDateListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement NewIncomeDateListener");
+                    + " must implement NewBillDateListener");
         }
     }
 
@@ -61,10 +61,21 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.setup_income, container, false);
+        final View rootView = inflater.inflate(R.layout.setup_bill, container, false);
 
-        textIncomeName = (EditText) rootView.findViewById(R.id.incomeName);
-        textIncomeAmount = (EditText) rootView.findViewById(R.id.incomeAmount);
+        textBillName = (EditText) rootView.findViewById(R.id.billName);
+        textBillAmount = (EditText) rootView.findViewById(R.id.billAmount);
+
+
+        //priority spinner setup
+        final Spinner prioritySpinner = (Spinner) rootView.findViewById(R.id.prioritySpinner);
+        //ArrayAdapter that brings together the string array and the spinner layout
+        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(rootView.getContext(),
+                R.array.priorityLevel, android.R.layout.simple_spinner_dropdown_item);
+        //layout to use when the list of choices appears
+        priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //apply the adapter to the spinner
+        prioritySpinner.setAdapter(priorityAdapter);
 
         //regularity spinner setup
         final Spinner regularitySpinner = (Spinner) rootView.findViewById(R.id.regularitySpinner);
@@ -93,79 +104,79 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
 
 
         //starts date picker fragment
-        Button payDate = (Button) rootView.findViewById(R.id.payDate);
-        payDate.setOnClickListener(new View.OnClickListener() {
+        Button dueDate = (Button) rootView.findViewById(R.id.dueDate);
+        dueDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: payDate button pressed");
+                Log.i(TAG, "onClick: dispenseDate button pressed");
 
                 if (dateListener == null){
                     throw new AssertionError();
                 }else {
-                    final String payDate = "PAY_DATE";
-                    dateListener.onDateButtonPressed(payDate);
-                    Log.i(TAG, "NewIncome payDate: Listener activated ");
+                    final String dueDate = "DUE_DATE";
+                    dateListener.onDateButtonPressed(dueDate);
+                    Log.i(TAG, "NewBill dueDate: button pressed and Listener activated ");
                 }
-
             }
         });
 
-        Button depositDate = (Button) rootView.findViewById(R.id.depositDate);
-        depositDate.setOnClickListener(new View.OnClickListener() {
+        Button billedOnDate = (Button) rootView.findViewById(R.id.billedOnDate);
+        billedOnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: depositDate button pressed");
+                Log.i(TAG, "onClick: dispenseDate button pressed");
+                //DialogFragment picker = new DatePickerFragment();
 
                 if (dateListener == null){
                     throw new AssertionError();
                 }else {
-                    final String depositDate = "DEPOSIT_DATE";
-                    dateListener.onDateButtonPressed(depositDate);
-                    Log.i(TAG, "NewIncome depositDate: Listener activated ");
+                    final String billedDate = "BILLED_DATE";
+                    dateListener.onDateButtonPressed(billedDate);
+                    Log.i(TAG, "NewBill dueDate: button pressed and Listener activated ");
                 }
             }
         });
 
 
         //done button that will package up user input to send to the AddAccountActivity
-        Button finishedIncome = (Button) rootView.findViewById(R.id.finishedIncome);
-        finishedIncome.setOnClickListener(new View.OnClickListener() {
+        Button finishedBill = (Button) rootView.findViewById(R.id.finishedBill);
+        finishedBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String incomeName = textIncomeName.getText().toString();
-                double incomeAmount = Double.parseDouble(textIncomeAmount.getText().toString());
-                String incomeRegularity = regularitySpinner.getSelectedItem().toString();
-                String incomeWithdrawType = withDrawTypesSpinner.getSelectedItem().toString();
-                String incomeChanges = changesSpinner.getSelectedItem().toString();
-                String incomeStatus = statusSpinner.getSelectedItem().toString();
+                String billName = textBillName.getText().toString();
+                double billAmount = Double.parseDouble(textBillAmount.getText().toString());
+                String billPriority = prioritySpinner.getSelectedItem().toString();
+                String billRegularity = regularitySpinner.getSelectedItem().toString();
+                String billWithdrawType = withDrawTypesSpinner.getSelectedItem().toString();
+                String billChanges = changesSpinner.getSelectedItem().toString();
+                String billStatus = statusSpinner.getSelectedItem().toString();
+
 
                 //logs output of current values at time of collections
-                Log.i(TAG, "onNewIncomeDone: \nName: " + incomeName
-                        + "\nAmount: " + incomeAmount
-                        + "\nRegularity: " + incomeRegularity);
-
+                Log.i(TAG, "onNewBillDone: \nName: " + billName
+                        + "\nAmount: " + billAmount
+                        + "\nPriority: " + billPriority
+                        + "\nRegularity: " + billRegularity);
 
                 boolean nAutoWithDraw, nChanges, nStatus;
 
-                String priority = "High";
-                String type = "Income";
-                nAutoWithDraw = Objects.equals(incomeWithdrawType, "Yes");
-                nChanges = Objects.equals(incomeChanges, "Yes");
-                nStatus = Objects.equals(incomeStatus, "Yes");
+                String type = "Bill";
+                nAutoWithDraw = Objects.equals(billWithdrawType, "Yes");
+                nChanges = Objects.equals(billChanges, "Yes");
+                nStatus = Objects.equals(billStatus, "Yes");
 
-
-                Account account = new Account(incomeName, type, AddAccountActivity.billedOnDate,
-                        AddAccountActivity.billDue, incomeAmount, priority, incomeRegularity,
+                //adds the information to a new account then adds it to Realm
+                Account account = new Account(billName, type, AddAccountActivity.billedOnDate,
+                        AddAccountActivity.billDue, billAmount, billPriority, billRegularity,
                         nAutoWithDraw, nChanges, nStatus);
-
                 dataSource.createAccount(account);
+
 
                 Intent backToMain = new Intent(rootView.getContext(), MainActivity.class);
                 startActivity(backToMain);
             }
+
         });
-
-
 
         return rootView;
     }
@@ -178,22 +189,18 @@ public class NewIncome extends android.app.Fragment implements AdapterView.OnIte
         dataSource.close();
     }
 
-
-    //used for spinner, listens for which item was selected
+    //required by Spinner
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
-
 
     //required by Spinner
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-
     //sends position of DatePicker button
-    public interface NewIncomeDateListener{
+    public interface NewBillDateListener{
         void onDateButtonPressed(String tvLocation);
     }
 

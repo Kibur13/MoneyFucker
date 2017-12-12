@@ -9,10 +9,8 @@ import android.widget.TextView;
 
 import com.example.mrclean.moneymapper.Accounts.AccountAdapter;
 import com.example.mrclean.moneymapper.Accounts.AccountListFragment;
-import com.example.mrclean.moneymapper.Database.AccountRealmDataMethods;
 import com.example.mrclean.moneymapper.Transactions.AddTransaction;
 import com.example.mrclean.moneymapper.Transactions.DeleteTransaction;
-import com.example.mrclean.moneymapper.Transactions.Transaction;
 import com.example.mrclean.moneymapper.Transactions.TransactionAdapter;
 import com.example.mrclean.moneymapper.Transactions.TransactionListFragment;
 import com.facebook.stetho.Stetho;
@@ -33,10 +31,11 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    //used to track the version number of the app
+    private static final int mmVersionNumber = 1;
 
     //needed to pass information between Transaction methods (RecyclerView and Add)
     public static Date dateTransaction;
-
 
     //public static final int SCHEMA_VERSION = 1;
     @Override
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        // TODO: 11/29/17 currently isn't working and should be set back up
+        // TODO: 11/29/17 is giving errors but seems to be working
         //chrome://inspect stetho setup for realm
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
 
-        //Realm setup
+        //Realm Account setup
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("account.realm")
@@ -65,12 +64,20 @@ public class MainActivity extends AppCompatActivity
 
         Realm.setDefaultConfiguration(config);
 
+        //initializes SharedPreferencesHelper
+        new SharedPreferencesHelper(this).StartSharedPreferences();
+
+        //checks the version number of the app
+        new SharedPreferencesHelper(this).VersionCheck(mmVersionNumber);
+
         AccountListFragment AccListFrag = new AccountListFragment();
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_holder, AccListFrag)
-                .commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_holder, AccListFrag)
+                    .commit();
+
     }
+
 
 
     //Long Listener from Account RecyclerView
@@ -125,7 +132,6 @@ public class MainActivity extends AppCompatActivity
                 dateTransaction = date;
                 break;
         }
-
 
         Log.i(TAG, "onFragmentFinish: DatePickerDate  date: " + date + "\nPosition: " + tvPosition);
 

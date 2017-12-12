@@ -7,7 +7,7 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingTop="16dp"
-    tools:context="com.example.mrclean.moneymapper.AccountCreation.AddAccountActivity">
+    tools:context="com.example.mrclean.moneymapper.accountCreation.AddAccountActivity">
 
     <FrameLayout
         android:id="@+id/add_account_container"

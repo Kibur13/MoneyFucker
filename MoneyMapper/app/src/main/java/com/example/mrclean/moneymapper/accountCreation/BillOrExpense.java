@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.AccountCreation;
+package com.example.mrclean.moneymapper.accountCreation;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +20,15 @@ public class BillOrExpense extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (BillOrExpenseListener) context;
+
+        //error handling for Listener
+        if (context instanceof BillOrExpenseListener) {
+            mListener = (BillOrExpenseListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement NewBillDateListener");
+        }
+
     }
 
     @Nullable

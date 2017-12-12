@@ -11,4 +11,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="income">Income</string>
     <string name="calculate_future_pay">Calculate Future Pay</string>
+    <string name="shared_preferences">com.example.MoneyMapper.SHARED_PREFERENCES</string>
+    <string name="balance_preferences">com.example.MoneyMapper.BALANCE_PREFS</string>
+    <string name="versionNumber">version_number</string>
+    <string name="current_balance">current_balance</string>
+
+
+    <string name="base_start">title_activity_base_start</string>
 </resources>
