@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AccountCreation.AddAccountActivity"
+            android:name=".accountCreation.AddAccountActivity"
             android:label="@string/title_activity_trans_collection"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -28,6 +28,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mrclean.moneymapper.MainActivity" />
         </activity>
+        <activity
+            android:name=".initialStart.BaseStart"
+            android:label="@string/base_start"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mrclean.moneymapper.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

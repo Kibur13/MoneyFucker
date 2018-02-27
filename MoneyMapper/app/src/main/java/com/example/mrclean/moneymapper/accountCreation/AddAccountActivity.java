@@ -1,4 +1,4 @@
-package com.example.mrclean.moneymapper.AccountCreation;
+package com.example.mrclean.moneymapper.accountCreation;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -140,6 +140,5 @@ public class AddAccountActivity extends AppCompatActivity
 
         Log.i(TAG, "AddAccountActivity onDateButtonPressed: tvLocation = " + tvLocation);
     }
-
 
 }
